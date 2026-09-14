@@ -238,6 +238,15 @@ footer p { margin: 7px 0 0; }
 }
 
 </style>
+  <style>
+    .datetime-shell{width:100%;max-width:100%;min-width:0;height:58px;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:#f8f2e9}
+    .datetime-shell:focus-within{border-color:#b77b69;box-shadow:0 0 0 3px rgba(145,63,47,.08)}
+    .datetime-shell input[type="datetime-local"]{display:flex;width:100%!important;max-width:100%!important;min-width:0!important;height:56px;padding:0 15px;border:0;box-shadow:none;background:transparent;color:var(--ink);font-size:17px;font-weight:500;line-height:normal;text-align:center;-webkit-appearance:none;appearance:none;inline-size:100%;max-inline-size:100%;min-inline-size:0;align-items:center;justify-content:center}
+    .datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{display:flex;width:100%;height:100%;min-width:0;margin:0;padding:0;overflow:hidden;align-items:center;justify-content:center;color:var(--ink);font-size:17px;line-height:normal;text-align:center;white-space:nowrap}
+    .datetime-shell input[type="datetime-local"]::-webkit-datetime-edit{display:flex;height:100%;margin:0;padding:0;align-items:center;justify-content:center;line-height:normal}
+    .time-grid-single{grid-template-columns:minmax(0,1fr)}
+    @media(max-width:580px){.datetime-shell input[type="datetime-local"],.datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{font-size:16px}}
+  </style>
 </head>
 <body>
   <main class="shell">
@@ -251,28 +260,13 @@ footer p { margin: 7px 0 0; }
       <div class="heading"><span>01</span><h2>问题与起卦时间</h2></div>
       <label for="question">所问事项</label>
       <textarea id="question" maxlength="100" placeholder="例如：这个项目目前最需要注意什么？"></textarea>
-      <div class="time-grid">
+      <div class="time-grid time-grid-single">
         <div>
           <label for="castTime">起卦时间</label>
-          <input id="castTime" type="datetime-local">
-        </div>
-        <div>
-          <label for="timezone">当前时区</label>
-          <input id="timezone" type="text" list="timezoneOptions" autocomplete="off" placeholder="例如 Asia/Shanghai">
-          <datalist id="timezoneOptions">
-            <option value="Asia/Shanghai">北京时间</option>
-            <option value="Asia/Hong_Kong">香港时间</option>
-            <option value="Asia/Taipei">台北时间</option>
-            <option value="Asia/Singapore">新加坡时间</option>
-            <option value="America/New_York">美国东部时间</option>
-            <option value="America/Chicago">美国中部时间</option>
-            <option value="America/Denver">美国山区时间</option>
-            <option value="America/Los_Angeles">美国太平洋时间</option>
-            <option value="Europe/London">伦敦时间</option>
-          </datalist>
+          <div class="datetime-shell"><input id="castTime" type="datetime-local"></div>
         </div>
       </div>
-      <p class="note">默认记录开始起卦的本地时间；时间和时区都可以修改。时区初始值由浏览器自动读取。</p>
+      <p class="note">默认记录设备当地时间，也可以手动修改；手动输入时请填写事情发生地的当地时间。</p>
     </section>
 
     <section class="card">
@@ -373,7 +367,6 @@ let isTossing = false;
 const el = id => document.getElementById(id);
 const question = el('question');
 const castTime = el('castTime');
-const timezone = el('timezone');
 const lineList = el('lineList');
 const result = el('result');
 
@@ -383,8 +376,6 @@ function localDateTime(date = new Date()) {
 }
 
 castTime.value = localDateTime();
-try { timezone.value = Intl.DateTimeFormat().resolvedOptions().timeZone || '本地时区'; }
-catch (_) { timezone.value = '本地时区'; }
 
 function lineFrom(value, index) {
   return { value, name: types[value], yang: value === 7 || value === 9, moving: value === 6 || value === 9, position: positions[index] };
@@ -437,7 +428,7 @@ function renderResult() {
   const timeText = castTime.value ? castTime.value.replace('T',' ') : '未填写时间';
   const draw = (lines, showMoving) => lines.slice().reverse().map(x => yaoMarkup(showMoving ? x : {...x, moving:false}, true)).join('');
   result.innerHTML = `
-    <div class="result-head"><span>基础卦象</span><span>${timeText} · ${timezone.value}</span></div>
+    <div class="result-head"><span>基础卦象</span><span>${timeText}</span></div>
     ${question.value.trim() ? `<p class="result-question">“${escapeHtml(question.value.trim())}”</p>` : ''}
     <div class="pair">
       <div class="hex"><span class="role">本卦</span><div class="big-lines">${draw(throws,true)}</div><h3>${base.name}</h3><p>第 ${base.number} 卦</p></div>
@@ -449,7 +440,7 @@ function renderResult() {
       <div class="meaning"><small>变化方向</small><h4>${changed.fullName}</h4><p>关键词：${changed.keywords}。请结合所问之事观察变化。</p></div>
     </div>`;
   result.hidden = false;
-  localStorage.setItem('liuyao-current', JSON.stringify({ question: question.value, castTime: castTime.value, timezone: timezone.value, throws: throws.map(x => x.value) }));
+  localStorage.setItem('liuyao-current', JSON.stringify({ question: question.value, castTime: castTime.value, throws: throws.map(x => x.value) }));
   setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 }
 
@@ -501,7 +492,7 @@ el('reset').addEventListener('click', () => {
     render();
   }
 });
-[question, castTime, timezone].forEach(input => input.addEventListener('change', () => { if (throws.length === 6) renderResult(); }));
+[question, castTime].forEach(input => input.addEventListener('change', () => { if (throws.length === 6) renderResult(); }));
 render();
 
 </script>
