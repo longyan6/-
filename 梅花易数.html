@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eee7da">
+  <title>梅花易数</title>
+  <style>
+:root{--paper:#eee7da;--ink:#292720;--muted:#81766a;--red:#94452f;--green:#3f5547;--card:rgba(255,252,246,.92);--border:#dfd2c1}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(circle at 15% 0,#fffaf0 0,transparent 32rem),linear-gradient(145deg,#f3ecdf,#e9dece);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}.shell{width:min(820px,100%);margin:auto;padding:44px 18px 72px}.hero{padding:24px 10px 32px}.eyebrow{margin:0;color:#9c654f;font-size:12px;letter-spacing:.35em}.hero h1{margin:12px 0 10px;font:700 55px/1.1 "STKaiti","KaiTi",serif}.hero>p:last-child{max-width:600px;color:var(--muted);line-height:1.75}.card{margin-bottom:18px;padding:27px;border:1px solid rgba(80,60,43,.1);border-radius:22px;background:var(--card);box-shadow:0 13px 38px rgba(68,48,30,.07)}label{display:block;margin-bottom:8px;color:#64594f;font-size:13px;font-weight:700}textarea,input,select{width:100%;border:1px solid var(--border);border-radius:12px;outline:0;background:#f8f2e9;color:var(--ink);font:inherit}textarea{min-height:94px;padding:14px;resize:vertical;line-height:1.6}input,select{height:48px;padding:0 13px}textarea:focus,input:focus,select:focus{border-color:#ae715e;box-shadow:0 0 0 3px rgba(148,69,47,.08)}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:24px;padding:5px;border-radius:14px;background:#ebe1d3}.tab{padding:12px 6px;border:0;border-radius:10px;background:transparent;color:#86776b;cursor:pointer}.tab.active{background:#fffaf2;color:#3d352e;font-weight:700;box-shadow:0 3px 12px rgba(65,46,31,.09)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.manual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.note{margin:14px 0 0;color:#948679;font-size:12px;line-height:1.7}.secondary{margin-top:13px;padding:8px 12px;border:0;background:transparent;color:var(--red);cursor:pointer}.primary{width:100%;margin-top:24px;padding:15px;border:0;border-radius:13px;background:var(--red);color:#fffaf1;font-weight:700;letter-spacing:.08em;cursor:pointer}.error{margin:18px 0 0;padding:11px 13px;border-radius:10px;background:#f6e4df;color:#9b3828;font-size:13px}.result{margin-top:28px;padding:29px;border-radius:25px;background:#272923;color:#f5eddf;box-shadow:0 19px 47px rgba(45,35,27,.21)}.result-head{display:flex;justify-content:space-between;gap:15px;color:#bbb2a6;font-size:12px}.question{margin:17px 0 0;padding-left:12px;border-left:3px solid #aa563e;color:#ddd2c5}.process{margin:19px 0 0;padding:14px 16px;border-radius:12px;background:#34362f;color:#c7beb2;font-size:12px;line-height:1.7}.hex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:31px 0}.hex-card{display:flex;flex-direction:column;align-items:center;padding:21px 10px;border:1px solid #45473f;border-radius:17px;background:#30322c}.hex-card .role{color:#baab9b;font-size:12px}.lines{width:118px;display:flex;flex-direction:column;gap:9px;margin:19px 0}.line{position:relative;height:9px}.line.yang{background:#e9d8bd}.line.yin{display:flex;justify-content:space-between}.line.yin:before,.line.yin:after{width:50px;background:#e9d8bd;content:""}.line em{position:absolute;right:-20px;top:-7px;color:#db8868;font-style:normal}.hex-card h3{margin:0;font:700 31px "STKaiti","KaiTi",serif}.hex-card p{margin:6px 0 0;color:#aaa094;font-size:11px}.body-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:16px;background:#4d5047}.body-box{padding:21px;background:#353730}.body-box small{color:#cf8668;letter-spacing:.12em}.body-box h4{margin:8px 0;font-size:18px}.body-box p{margin:0;color:#c9c1b6;font-size:13px;line-height:1.7}.relation{margin-top:15px;padding:17px 20px;border:1px solid #495349;border-radius:14px;background:#303a32;color:#ddd6cb;line-height:1.7}.relation b{color:#e2a07e}footer{padding:28px 13px 0;color:#887c70;font-size:12px;line-height:1.7}@media(max-width:620px){.shell{padding-top:24px}.hero h1{font-size:46px}.card,.result{padding:21px 17px}.field-grid,.manual-grid,.body-grid{grid-template-columns:1fr}.hex-grid{gap:6px}.hex-card{padding:17px 4px}.lines{width:82px}.line.yin:before,.line.yin:after{width:35px}.hex-card h3{font-size:25px}.result-head{flex-direction:column}.tabs{font-size:13px}}
+
+</style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">象数 · 观变</p>
+      <h1>梅花易数</h1>
+      <p>以时间、数字或已知卦象起卦，查看本卦、互卦、变卦与体用关系。</p>
+    </header>
+
+    <section class="card">
+      <label for="question">所问事项</label>
+      <textarea id="question" maxlength="100" placeholder="一次只问一件具体的事"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-mode="time">时间起卦</button>
+        <button class="tab" data-mode="numbers">双数起卦</button>
+        <button class="tab" data-mode="manual">手动起卦</button>
+      </div>
+
+      <div id="timePanel" class="panel">
+        <div class="field-grid">
+          <div><label for="castTime">起卦时间</label><input id="castTime" type="datetime-local"></div>
+          <div><label for="timezone">时区</label><input id="timezone" type="text" list="zones"><datalist id="zones"><option>Asia/Shanghai</option><option>Asia/Hong_Kong</option><option>Asia/Taipei</option><option>America/New_York</option><option>America/Los_Angeles</option><option>Europe/London</option></datalist></div>
+        </div>
+        <button id="nowButton" class="secondary">使用当前时间</button>
+        <p class="note">按常见时间起卦法：农历年支数＋月＋日定上卦，再加时支数定下卦与动爻。余0时，八卦按8、动爻按6。</p>
+      </div>
+
+      <div id="numbersPanel" class="panel" hidden>
+        <div class="field-grid">
+          <div><label for="firstNumber">第一个数（上卦）</label><input id="firstNumber" type="number" min="1" step="1" inputmode="numeric" placeholder="例如 55"></div>
+          <div><label for="secondNumber">第二个数（下卦）</label><input id="secondNumber" type="number" min="1" step="1" inputmode="numeric" placeholder="例如 3"></div>
+        </div>
+        <p class="note">两个数可以位数不同，但必须是正整数。两数相加除以6所得余数确定动爻。</p>
+      </div>
+
+      <div id="manualPanel" class="panel" hidden>
+        <div class="manual-grid">
+          <div><label for="upperSelect">上卦</label><select id="upperSelect"></select></div>
+          <div><label for="lowerSelect">下卦</label><select id="lowerSelect"></select></div>
+          <div><label for="movingSelect">动爻</label><select id="movingSelect"><option value="1">初爻</option><option value="2">二爻</option><option value="3">三爻</option><option value="4">四爻</option><option value="5">五爻</option><option value="6">上爻</option></select></div>
+        </div>
+        <p class="note">用于录入已经得到的卦象或检查计算；它不是另一种随机方式。</p>
+      </div>
+
+      <p id="error" class="error" hidden></p>
+      <button id="castButton" class="primary">生成卦象</button>
+    </section>
+
+    <section id="result" class="result" hidden></section>
+
+    <footer>本工具用于传统文化学习与自我反思，不把卦象作为医疗、投资、法律或其他专业结论。</footer>
+  </main>
+  <script>
+const trigrams=[
+  {n:1,name:'乾',nature:'天',element:'金',bits:'111'},
+  {n:2,name:'兑',nature:'泽',element:'金',bits:'110'},
+  {n:3,name:'离',nature:'火',element:'火',bits:'101'},
+  {n:4,name:'震',nature:'雷',element:'木',bits:'100'},
+  {n:5,name:'巽',nature:'风',element:'木',bits:'011'},
+  {n:6,name:'坎',nature:'水',element:'水',bits:'010'},
+  {n:7,name:'艮',nature:'山',element:'土',bits:'001'},
+  {n:8,name:'坤',nature:'地',element:'土',bits:'000'}
+];
+const byBits=Object.fromEntries(trigrams.map(x=>[x.bits,x]));
+const codes=trigrams.map(x=>x.bits);
+const hexagramsByLower={
+  '111':[[1,'乾'],[43,'夬'],[14,'大有'],[34,'大壮'],[9,'小畜'],[5,'需'],[26,'大畜'],[11,'泰']],
+  '110':[[10,'履'],[58,'兑'],[38,'睽'],[54,'归妹'],[61,'中孚'],[60,'节'],[41,'损'],[19,'临']],
+  '101':[[13,'同人'],[49,'革'],[30,'离'],[55,'丰'],[37,'家人'],[63,'既济'],[22,'贲'],[36,'明夷']],
+  '100':[[25,'无妄'],[17,'随'],[21,'噬嗑'],[51,'震'],[42,'益'],[3,'屯'],[27,'颐'],[24,'复']],
+  '011':[[44,'姤'],[28,'大过'],[50,'鼎'],[32,'恒'],[57,'巽'],[48,'井'],[18,'蛊'],[46,'升']],
+  '010':[[6,'讼'],[47,'困'],[64,'未济'],[40,'解'],[59,'涣'],[29,'坎'],[4,'蒙'],[7,'师']],
+  '001':[[33,'遯'],[31,'咸'],[56,'旅'],[62,'小过'],[53,'渐'],[39,'蹇'],[52,'艮'],[15,'谦']],
+  '000':[[12,'否'],[45,'萃'],[35,'晋'],[16,'豫'],[20,'观'],[8,'比'],[23,'剥'],[2,'坤']]
+};
+const hexagramMap={};
+codes.forEach(lower=>codes.forEach((upper,i)=>hexagramMap[`${upper}-${lower}`]=hexagramsByLower[lower][i]));
+const branchNames=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+let mode='time';
+const el=id=>document.getElementById(id);
+const panels={time:el('timePanel'),numbers:el('numbersPanel'),manual:el('manualPanel')};
+
+function localDateTime(date=new Date()){const offset=date.getTimezoneOffset();return new Date(date.getTime()-offset*60000).toISOString().slice(0,16)}
+function remainder(value,base){const r=value%base;return r===0?base:r}
+function remainderText(value,base){const r=value%base;return r===0?`余0，按${base}处理`:`余${r}`}
+function trigram(n){return trigrams[n-1]}
+function lookup(upper,lower){const rec=hexagramMap[`${upper.bits}-${lower.bits}`];return{number:rec[0],name:rec[1],fullName:upper.bits===lower.bits?`${rec[1]}为${upper.nature}`:`${upper.nature}${lower.nature}${rec[1]}`,upper,lower}}
+function linesOf(upper,lower){return[...lower.bits,...upper.bits].map(x=>x==='1')}
+function fromLines(lines){const lower=byBits[lines.slice(0,3).map(Number).join('')],upper=byBits[lines.slice(3).map(Number).join('')];return lookup(upper,lower)}
+function mutual(lines){return fromLines([lines[1],lines[2],lines[3],lines[2],lines[3],lines[4]])}
+function changed(lines,moving){const copy=[...lines];copy[moving-1]=!copy[moving-1];return fromLines(copy)}
+function escapeHtml(s){return s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+function chineseDateParts(date){
+  const formatter=new Intl.DateTimeFormat('zh-CN-u-ca-chinese',{year:'numeric',month:'numeric',day:'numeric'});
+  const parts=formatter.formatToParts(date);
+  const get=type=>parts.find(x=>x.type===type)?.value;
+  const year=Number(get('relatedYear'));
+  const monthText=get('month')||'';
+  const day=Number(get('day'));
+  const monthNames={'正':1,'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'冬':11,'十二':12,'腊':12};
+  const cleanMonth=monthText.replace(/[闰月]/g,'');
+  const month=/^\d+$/.test(cleanMonth)?Number(cleanMonth):monthNames[cleanMonth];
+  if(!year||!month||!day)throw new Error('当前浏览器无法完成农历转换，请改用双数或手动起卦。');
+  const yearBranch=remainder(year-3,12);
+  const hour=date.getHours();
+  const hourBranch=Math.floor(((hour+1)%24)/2)+1;
+  return{year,month,day,yearBranch,hourBranch,branch:branchNames[hourBranch-1],leap:/闰/.test(monthText)};
+}
+
+function calculate(){
+  if(mode==='numbers'){
+    const a=Number(el('firstNumber').value),b=Number(el('secondNumber').value);
+    if(!Number.isSafeInteger(a)||a<1||!Number.isSafeInteger(b)||b<1)throw new Error('请输入两个有效的正整数。');
+    return{upper:trigram(remainder(a,8)),lower:trigram(remainder(b,8)),moving:remainder(a+b,6),process:`${a} ÷ 8 ${remainderText(a,8)}；${b} ÷ 8 ${remainderText(b,8)}；两数之和 ${a+b} ÷ 6 ${remainderText(a+b,6)}。`,time:'双数起卦'};
+  }
+  if(mode==='manual'){
+    const upper=trigram(Number(el('upperSelect').value)),lower=trigram(Number(el('lowerSelect').value)),moving=Number(el('movingSelect').value);
+    return{upper,lower,moving,process:`手动选择上卦${upper.name}、下卦${lower.name}、${['初','二','三','四','五','上'][moving-1]}爻动。`,time:'手动起卦'};
+  }
+  if(!el('castTime').value)throw new Error('请选择起卦时间。');
+  const date=new Date(el('castTime').value);
+  if(Number.isNaN(date.getTime()))throw new Error('起卦时间无效。');
+  const p=chineseDateParts(date),base=p.yearBranch+p.month+p.day,total=base+p.hourBranch;
+  return{upper:trigram(remainder(base,8)),lower:trigram(remainder(total,8)),moving:remainder(total,6),process:`农历${p.year}年${p.leap?'闰':''}${p.month}月${p.day}日，年支数${p.yearBranch}，${p.branch}时数${p.hourBranch}。上卦数：${p.yearBranch}+${p.month}+${p.day}=${base}；下卦及动爻总数：${base}+${p.hourBranch}=${total}。`,time:`${el('castTime').value.replace('T',' ')} · ${escapeHtml(el('timezone').value)}`};
+}
+
+function relation(body,use){
+  if(body.element===use.element)return`体用比和（同为${body.element}），象征彼此协调、同类相助。`;
+  const produces={木:'火',火:'土',土:'金',金:'水',水:'木'};
+  const controls={木:'土',土:'水',水:'火',火:'金',金:'木'};
+  if(produces[use.element]===body.element)return`用生体：用卦${use.element}生体卦${body.element}，通常视为外部条件有所助益。`;
+  if(produces[body.element]===use.element)return`体生用：体卦${body.element}生用卦${use.element}，通常表示自身有所付出或消耗。`;
+  if(controls[body.element]===use.element)return`体克用：体卦${body.element}克用卦${use.element}，通常表示自身能够制约或推动所问之事。`;
+  return`用克体：用卦${use.element}克体卦${body.element}，通常提示外部压力或阻力。`;
+}
+
+function lineMarkup(lines,moving=0){return lines.slice().reverse().map((yang,i)=>`<div class="line ${yang?'yang':'yin'}">${moving===6-i?'<em>×</em>':''}</div>`).join('')}
+function card(role,hex,lines,moving=0){return`<div class="hex-card"><span class="role">${role}</span><div class="lines">${lineMarkup(lines,moving)}</div><h3>${hex.name}</h3><p>${hex.fullName} · 第${hex.number}卦</p></div>`}
+function renderResult(data){
+  const base=lookup(data.upper,data.lower),lines=linesOf(data.upper,data.lower),middle=mutual(lines),change=changed(lines,data.moving);
+  const middleLines=linesOf(middle.upper,middle.lower),changedLines=[...lines];changedLines[data.moving-1]=!changedLines[data.moving-1];
+  const movingInLower=data.moving<=3,body=movingInLower?data.upper:data.lower,use=movingInLower?data.lower:data.upper;
+  el('result').innerHTML=`<div class="result-head"><span>${mode==='time'?'时间起卦':mode==='numbers'?'双数起卦':'手动起卦'}</span><span>${data.time}</span></div>${el('question').value.trim()?`<p class="question">“${escapeHtml(el('question').value.trim())}”</p>`:''}<div class="process">${data.process}</div><div class="hex-grid">${card('本卦',base,lines,data.moving)}${card('互卦',middle,middleLines)}${card('变卦',change,changedLines)}</div><div class="body-grid"><div class="body-box"><small>体卦 · 自身</small><h4>${body.name}为${body.nature} · ${body.element}</h4><p>动爻位于${movingInLower?'下卦':'上卦'}，因此不动的${movingInLower?'上卦':'下卦'}取为体。</p></div><div class="body-box"><small>用卦 · 所问之事</small><h4>${use.name}为${use.nature} · ${use.element}</h4><p>发生变化的${movingInLower?'下卦':'上卦'}取为用。</p></div></div><div class="relation"><b>体用关系：</b>${relation(body,use)}</div>`;
+  el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+function setNow(){el('castTime').value=localDateTime();try{el('timezone').value=Intl.DateTimeFormat().resolvedOptions().timeZone||'本地时区'}catch(_){el('timezone').value='本地时区'}}
+trigrams.forEach(t=>{const text=`${t.n} · ${t.name}（${t.nature}／${t.element}）`;el('upperSelect').add(new Option(text,t.n));el('lowerSelect').add(new Option(text,t.n))});
+setNow();el('upperSelect').value='1';el('lowerSelect').value='8';
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));Object.entries(panels).forEach(([key,panel])=>panel.hidden=key!==mode);el('error').hidden=true}));
+el('nowButton').addEventListener('click',setNow);
+el('castButton').addEventListener('click',()=>{try{el('error').hidden=true;renderResult(calculate())}catch(error){el('error').textContent=error.message;el('error').hidden=false;el('result').hidden=true}});
+
+</script>
+</body>
+</html>
+
