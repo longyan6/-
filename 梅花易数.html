@@ -9,6 +9,14 @@
 :root{--paper:#eee7da;--ink:#292720;--muted:#81766a;--red:#94452f;--green:#3f5547;--card:rgba(255,252,246,.92);--border:#dfd2c1}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(circle at 15% 0,#fffaf0 0,transparent 32rem),linear-gradient(145deg,#f3ecdf,#e9dece);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}.shell{width:min(820px,100%);margin:auto;padding:44px 18px 72px}.hero{padding:24px 10px 32px}.eyebrow{margin:0;color:#9c654f;font-size:12px;letter-spacing:.35em}.hero h1{margin:12px 0 10px;font:700 55px/1.1 "STKaiti","KaiTi",serif}.hero>p:last-child{max-width:600px;color:var(--muted);line-height:1.75}.card{margin-bottom:18px;padding:27px;border:1px solid rgba(80,60,43,.1);border-radius:22px;background:var(--card);box-shadow:0 13px 38px rgba(68,48,30,.07)}label{display:block;margin-bottom:8px;color:#64594f;font-size:13px;font-weight:700}textarea,input,select{width:100%;border:1px solid var(--border);border-radius:12px;outline:0;background:#f8f2e9;color:var(--ink);font:inherit}textarea{min-height:94px;padding:14px;resize:vertical;line-height:1.6}input,select{height:48px;padding:0 13px}textarea:focus,input:focus,select:focus{border-color:#ae715e;box-shadow:0 0 0 3px rgba(148,69,47,.08)}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:24px;padding:5px;border-radius:14px;background:#ebe1d3}.tab{padding:12px 6px;border:0;border-radius:10px;background:transparent;color:#86776b;cursor:pointer}.tab.active{background:#fffaf2;color:#3d352e;font-weight:700;box-shadow:0 3px 12px rgba(65,46,31,.09)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.manual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.note{margin:14px 0 0;color:#948679;font-size:12px;line-height:1.7}.secondary{margin-top:13px;padding:8px 12px;border:0;background:transparent;color:var(--red);cursor:pointer}.primary{width:100%;margin-top:24px;padding:15px;border:0;border-radius:13px;background:var(--red);color:#fffaf1;font-weight:700;letter-spacing:.08em;cursor:pointer}.error{margin:18px 0 0;padding:11px 13px;border-radius:10px;background:#f6e4df;color:#9b3828;font-size:13px}.result{margin-top:28px;padding:29px;border-radius:25px;background:#272923;color:#f5eddf;box-shadow:0 19px 47px rgba(45,35,27,.21)}.result-head{display:flex;justify-content:space-between;gap:15px;color:#bbb2a6;font-size:12px}.question{margin:17px 0 0;padding-left:12px;border-left:3px solid #aa563e;color:#ddd2c5}.process{margin:19px 0 0;padding:14px 16px;border-radius:12px;background:#34362f;color:#c7beb2;font-size:12px;line-height:1.7}.hex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:31px 0}.hex-card{display:flex;flex-direction:column;align-items:center;padding:21px 10px;border:1px solid #45473f;border-radius:17px;background:#30322c}.hex-card .role{color:#baab9b;font-size:12px}.lines{width:118px;display:flex;flex-direction:column;gap:9px;margin:19px 0}.line{position:relative;height:9px}.line.yang{background:#e9d8bd}.line.yin{display:flex;justify-content:space-between}.line.yin:before,.line.yin:after{width:50px;background:#e9d8bd;content:""}.line em{position:absolute;right:-20px;top:-7px;color:#db8868;font-style:normal}.hex-card h3{margin:0;font:700 31px "STKaiti","KaiTi",serif}.hex-card p{margin:6px 0 0;color:#aaa094;font-size:11px}.body-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:16px;background:#4d5047}.body-box{padding:21px;background:#353730}.body-box small{color:#cf8668;letter-spacing:.12em}.body-box h4{margin:8px 0;font-size:18px}.body-box p{margin:0;color:#c9c1b6;font-size:13px;line-height:1.7}.relation{margin-top:15px;padding:17px 20px;border:1px solid #495349;border-radius:14px;background:#303a32;color:#ddd6cb;line-height:1.7}.relation b{color:#e2a07e}footer{padding:28px 13px 0;color:#887c70;font-size:12px;line-height:1.7}@media(max-width:620px){.shell{padding-top:24px}.hero h1{font-size:46px}.card,.result{padding:21px 17px}.field-grid,.manual-grid,.body-grid{grid-template-columns:1fr}.hex-grid{gap:6px}.hex-card{padding:17px 4px}.lines{width:82px}.line.yin:before,.line.yin:after{width:35px}.hex-card h3{font-size:25px}.result-head{flex-direction:column}.tabs{font-size:13px}}
 
 </style>
+  <style>
+    .datetime-shell{width:100%;max-width:100%;min-width:0;height:58px;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:#f8f2e9}
+    .datetime-shell:focus-within{border-color:#ae715e;box-shadow:0 0 0 3px rgba(148,69,47,.08)}
+    .datetime-shell input[type="datetime-local"]{display:flex;width:100%!important;max-width:100%!important;min-width:0!important;height:56px;padding:0 15px;border:0;box-shadow:none;background:transparent;color:var(--ink);font-size:17px;font-weight:500;line-height:normal;text-align:center;-webkit-appearance:none;appearance:none;inline-size:100%;max-inline-size:100%;min-inline-size:0;align-items:center;justify-content:center}
+    .datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{display:flex;width:100%;height:100%;min-width:0;margin:0;padding:0;overflow:hidden;align-items:center;justify-content:center;color:var(--ink);font-size:17px;line-height:normal;text-align:center;white-space:nowrap}
+    .datetime-shell input[type="datetime-local"]::-webkit-datetime-edit{display:flex;height:100%;margin:0;padding:0;align-items:center;justify-content:center;line-height:normal}
+    @media(max-width:620px){.datetime-shell input[type="datetime-local"],.datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{font-size:16px}}
+  </style>
 </head>
 <body>
   <main class="shell">
@@ -31,12 +39,10 @@
       </div>
 
       <div id="timePanel" class="panel">
-        <div class="field-grid">
-          <div><label for="castTime">起卦时间</label><input id="castTime" type="datetime-local"></div>
-          <div><label for="timezone">时区</label><input id="timezone" type="text" list="zones"><datalist id="zones"><option>Asia/Shanghai</option><option>Asia/Hong_Kong</option><option>Asia/Taipei</option><option>America/New_York</option><option>America/Los_Angeles</option><option>Europe/London</option></datalist></div>
-        </div>
+        <label for="castTime">起卦时间</label>
+        <div class="datetime-shell"><input id="castTime" type="datetime-local"></div>
         <button id="nowButton" class="secondary">使用当前时间</button>
-        <p class="note">按常见时间起卦法：农历年支数＋月＋日定上卦，再加时支数定下卦与动爻。余0时，八卦按8、动爻按6。</p>
+        <p class="note">自动读取设备当地时间；手动输入时请填写事情发生地的当地时间。按农历年支数＋月＋日定上卦，再加时支数定下卦与动爻。</p>
       </div>
 
       <div id="numbersPanel" class="panel" hidden>
@@ -136,7 +142,7 @@ function calculate(){
   const date=new Date(el('castTime').value);
   if(Number.isNaN(date.getTime()))throw new Error('起卦时间无效。');
   const p=chineseDateParts(date),base=p.yearBranch+p.month+p.day,total=base+p.hourBranch;
-  return{upper:trigram(remainder(base,8)),lower:trigram(remainder(total,8)),moving:remainder(total,6),process:`农历${p.year}年${p.leap?'闰':''}${p.month}月${p.day}日，年支数${p.yearBranch}，${p.branch}时数${p.hourBranch}。上卦数：${p.yearBranch}+${p.month}+${p.day}=${base}；下卦及动爻总数：${base}+${p.hourBranch}=${total}。`,time:`${el('castTime').value.replace('T',' ')} · ${escapeHtml(el('timezone').value)}`};
+  return{upper:trigram(remainder(base,8)),lower:trigram(remainder(total,8)),moving:remainder(total,6),process:`农历${p.year}年${p.leap?'闰':''}${p.month}月${p.day}日，年支数${p.yearBranch}，${p.branch}时数${p.hourBranch}。上卦数：${p.yearBranch}+${p.month}+${p.day}=${base}；下卦及动爻总数：${base}+${p.hourBranch}=${total}。`,time:el('castTime').value.replace('T',' ')};
 }
 
 function relation(body,use){
@@ -159,7 +165,7 @@ function renderResult(data){
   el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
-function setNow(){el('castTime').value=localDateTime();try{el('timezone').value=Intl.DateTimeFormat().resolvedOptions().timeZone||'本地时区'}catch(_){el('timezone').value='本地时区'}}
+function setNow(){el('castTime').value=localDateTime()}
 trigrams.forEach(t=>{const text=`${t.n} · ${t.name}（${t.nature}／${t.element}）`;el('upperSelect').add(new Option(text,t.n));el('lowerSelect').add(new Option(text,t.n))});
 setNow();el('upperSelect').value='1';el('lowerSelect').value='8';
 document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));Object.entries(panels).forEach(([key,panel])=>panel.hidden=key!==mode);el('error').hidden=true}));
