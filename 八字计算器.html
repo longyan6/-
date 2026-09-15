@@ -15,6 +15,12 @@
     #solarDate{display:flex;width:100%!important;max-width:100%!important;min-width:0!important;height:56px;padding:0 16px;border:0;box-shadow:none;background:transparent;color:var(--ink);font-size:18px;font-weight:500;line-height:normal;text-align:center;-webkit-appearance:none;appearance:none;inline-size:100%;max-inline-size:100%;min-inline-size:0;align-items:center;justify-content:center}
     #solarDate::-webkit-date-and-time-value{display:flex;width:100%;height:100%;min-width:0;margin:0;padding:0;overflow:hidden;align-items:center;justify-content:center;color:var(--ink);font-size:18px;line-height:normal;text-align:center;text-overflow:ellipsis;white-space:nowrap}
     #solarDate::-webkit-datetime-edit{display:flex;height:100%;margin:0;padding:0;align-items:center;justify-content:center;line-height:normal}
+    .time-input-shell{width:100%;max-width:100%;min-width:0;height:52px;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:#f8f2e9}
+    .time-input-shell:focus-within{border-color:#ae715e;box-shadow:0 0 0 3px rgba(147,67,47,.08)}
+    #exactTime{display:flex;width:100%!important;max-width:100%!important;min-width:0!important;height:50px;padding:0 15px;border:0;box-shadow:none;background:transparent;font-size:17px;text-align:center;-webkit-appearance:none;appearance:none;align-items:center;justify-content:center}
+    #exactTime::-webkit-date-and-time-value,#exactTime::-webkit-datetime-edit{display:flex;width:100%;height:100%;margin:0;padding:0;align-items:center;justify-content:center;text-align:center}
+    .export-actions{margin-top:18px;text-align:center}.export-button{width:100%;padding:14px 18px;border:1px solid #675f54;border-radius:13px;background:#f1dfc4;color:#342f28;font:700 14px system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;cursor:pointer}
+    .export-preview{margin-top:15px;padding:14px;border:1px solid #4b4d45;border-radius:15px;background:#34362f;text-align:center}.export-preview img{display:block;width:100%;height:auto;border-radius:10px}.export-preview p{margin:11px 0 0;color:#c9c0b5;font-size:12px;line-height:1.7}.export-preview a{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:10px;background:#93432f;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
   </style>
 </head>
 <body>
@@ -48,6 +54,10 @@
       <div class="rule"></div>
       <label for="timePeriod">出生时间段</label>
       <select id="timePeriod"></select>
+
+      <label for="exactTime" class="top-gap">精确出生时间（可选）</label>
+      <div class="time-input-shell"><input id="exactTime" type="time" step="60"></div>
+      <p class="note">知道具体时间时请填写，程序会自动匹配时辰；若出生时辰跨越节气交接，必须填写精确时间才能正确排盘。</p>
 
       <label for="dayBoundary" class="top-gap">子时换日规则</label>
       <select id="dayBoundary">
@@ -8619,6 +8629,8 @@ const periods=[
   ['辰时','07:00–08:59',7],['巳时','09:00–10:59',9],['午时','11:00–12:59',11],['未时','13:00–14:59',13],
   ['申时','15:00–16:59',15],['酉时','17:00–18:59',17],['戌时','19:00–20:59',19],['亥时','21:00–22:59',21],['晚子时','23:00–23:59',23]
 ];
+const zodiacByBranch={子:'鼠',丑:'牛',寅:'虎',卯:'兔',辰:'龙',巳:'蛇',午:'马',未:'羊',申:'猴',酉:'鸡',戌:'狗',亥:'猪'};
+let lastResult=null;
 
 function init(){
   const now=new Date();el('solarDate').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;el('lunarYear').value=now.getFullYear();
@@ -8628,16 +8640,51 @@ function init(){
   const currentHour=now.getHours();let selected=periods.find(x=>currentHour===23?x[2]===23:currentHour===0?x[2]===0:currentHour>=x[2]&&currentHour<x[2]+2);el('timePeriod').value=String(selected?selected[2]:0);
 }
 
-function selectedSolar(){
-  const hour=Number(el('timePeriod').value);
+function periodForHour(hour){
+  if(hour===23)return periods[12];
+  if(hour===0)return periods[0];
+  return periods.find(item=>hour>=item[2]&&hour<=item[2]+1);
+}
+
+function solarFromInput(hour,minute=0){
   if(calendarMode==='solar'){
     if(!el('solarDate').value)throw new Error('请选择阳历出生日期。');
     const [year,month,day]=el('solarDate').value.split('-').map(Number);
-    return Solar.fromYmdHms(year,month,day,hour,0,0);
+    if(!Number.isInteger(year)||year<1900||year>2100)throw new Error('阳历出生日期请选择1900年至2100年之间。');
+    return Solar.fromYmdHms(year,month,day,hour,minute,0);
   }
   const year=Number(el('lunarYear').value),month=Number(el('lunarMonth').value),day=Number(el('lunarDay').value),leap=el('leapMonth').checked;
   if(!Number.isInteger(year)||year<1900||year>2100)throw new Error('阴历年份请输入1900至2100之间的整数。');
-  try{return Lunar.fromYmdHms(year,leap?-month:month,day,hour,0,0).getSolar()}catch(error){throw new Error(leap?'该年份没有这个闰月，或日期超出当月天数。':'阴历日期无效，请检查月份和日期。')}
+  try{return Lunar.fromYmdHms(year,leap?-month:month,day,hour,minute,0).getSolar()}catch(error){throw new Error(leap?'该年份没有这个闰月，或日期超出当月天数。':'阴历日期无效，请检查月份和日期。')}
+}
+
+function eightCharAt(solar){
+  const eightChar=solar.getLunar().getEightChar();
+  eightChar.setSect(Number(el('dayBoundary').value));
+  return eightChar;
+}
+
+function selectedBirth(){
+  const exactValue=el('exactTime').value.trim();
+  let hour,minute,period,exact=false;
+  if(exactValue){
+    const match=exactValue.match(/^(\d{2}):(\d{2})$/);
+    if(!match)throw new Error('精确出生时间无效。');
+    hour=Number(match[1]);minute=Number(match[2]);period=periodForHour(hour);exact=true;
+    if(!period||minute<0||minute>59)throw new Error('精确出生时间无效。');
+    el('timePeriod').value=String(period[2]);
+  }else{
+    period=periods.find(item=>item[2]===Number(el('timePeriod').value));
+    if(!period)throw new Error('请选择出生时间段。');
+    hour=period[2];minute=0;
+    const endHour=hour===0||hour===23?hour:hour+1;
+    const startEight=eightCharAt(solarFromInput(hour,0));
+    const endEight=eightCharAt(solarFromInput(endHour,59));
+    if(startEight.getYear()!==endEight.getYear()||startEight.getMonth()!==endEight.getMonth()){
+      throw new Error(`所选${period[0]}跨越立春或节气交接，请填写精确出生时间后再计算。`);
+    }
+  }
+  return{solar:solarFromInput(hour,minute),period,exact,exactValue,hour,minute};
 }
 
 function pillarData(eightChar){
@@ -8650,20 +8697,56 @@ function pillarData(eightChar){
 }
 
 function render(){
-  const solar=selectedSolar(),lunar=solar.getLunar(),eightChar=lunar.getEightChar();eightChar.setSect(Number(el('dayBoundary').value));
+  const birth=selectedBirth(),solar=birth.solar,lunar=solar.getLunar(),eightChar=eightCharAt(solar);
   const pillars=pillarData(eightChar),dayGan=eightChar.getDayGan();
-  const period=periods.find(x=>x[2]===Number(el('timePeriod').value));
+  const period=birth.period;
+  const timeText=birth.exact?`${birth.exactValue} · ${period[0]}`:period[0];
+  const solarLine=birth.exact?`${solar.toYmd()} ${birth.exactValue}`:`${solar.toYmd()} ${period[1]}`;
+  const lunarLine=`${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
+  const ruleText=`${el('dayBoundary').value==='1'?'23:00子初换日':'00:00午夜换日'}；年柱以立春、月柱以节气为界`;
+  const baziZodiac=zodiacByBranch[pillars[0].gz[1]];
   el('result').innerHTML=`
-    <div class="result-head"><span>四柱八字</span><span>${solar.toYmd()} · ${period[0]}</span></div>
-    <div class="calendar-info">阳历：${solar.toYmd()} ${period[1]}<br>阴历：${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()} · ${lunar.getYearShengXiao()}年<br>换日规则：${el('dayBoundary').value==='1'?'23:00子初换日':'00:00午夜换日'}；年柱以立春、月柱以节气为界。</div>
+    <div class="result-head"><span>四柱八字</span><span>${solar.toYmd()} · ${timeText}</span></div>
+    <div class="calendar-info">阳历：${solarLine}<br>阴历：${lunarLine}<br>农历生肖（春节界）：${lunar.getYearShengXiao()}；八字生肖（立春界）：${baziZodiac}<br>换日规则：${ruleText}。</div>
     <div class="pillars">${pillars.map(p=>`<div class="pillar"><div class="pillar-title">${p.title}</div><span class="gan">${p.gz[0]}</span><span class="zhi">${p.gz[1]}</span><div class="pillar-meta">${p.wx} · ${p.ss}<br>${p.ny}</div></div>`).join('')}</div>
     <div class="day-master"><b>日主：</b>${dayGan}${stemsElement[dayGan]}（${stemsYinYang[dayGan]}${stemsElement[dayGan]}）</div>
-    <div class="details">${pillars.map(p=>`<div class="detail"><small>${p.title}详情</small><p>干支：${p.gz}<br>藏干：${p.hide}<br>五行：${p.wx}<br>纳音：${p.ny}</p></div>`).join('')}</div>`;
+    <div class="details">${pillars.map(p=>`<div class="detail"><small>${p.title}详情</small><p>干支：${p.gz}<br>藏干：${p.hide}<br>五行：${p.wx}<br>纳音：${p.ny}</p></div>`).join('')}</div>
+    <div class="export-actions"><button id="exportImage" class="export-button" type="button">导出结果图片</button></div>
+    <div id="exportPreview" class="export-preview" hidden><img id="exportedImage" alt="八字排盘结果图片"><p>苹果手机可长按图片保存；也可以点击下方按钮打开或下载原图。</p><a id="downloadImage" download>保存图片</a></div>`;
+  lastResult={solarDate:solar.toYmd(),timeText,solarLine,lunarLine,lunarZodiac:lunar.getYearShengXiao(),baziZodiac,ruleText,pillars,dayGan};
+  el('exportImage').addEventListener('click',exportResultImage);
   el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+function roundedRect(ctx,x,y,w,h,r,fill,stroke){
+  const radius=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+radius,y);ctx.arcTo(x+w,y,x+w,y+h,radius);ctx.arcTo(x+w,y+h,x,y+h,radius);ctx.arcTo(x,y+h,x,y,radius);ctx.arcTo(x,y,x+w,y,radius);ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}
+}
+
+function canvasText(ctx,text,x,y,size,color,weight='400',align='left',family='system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif'){
+  ctx.font=`${weight} ${size}px ${family}`;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(text,x,y);
+}
+
+function exportResultImage(){
+  if(!lastResult)return;
+  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1500;const ctx=canvas.getContext('2d');
+  const gradient=ctx.createLinearGradient(0,0,1080,1500);gradient.addColorStop(0,'#252720');gradient.addColorStop(1,'#33352e');ctx.fillStyle=gradient;ctx.fillRect(0,0,1080,1500);
+  canvasText(ctx,'四柱八字',60,82,30,'#d8cfc2','500');canvasText(ctx,`${lastResult.solarDate} · ${lastResult.timeText}`,1020,82,25,'#c5baad','400','right');
+  roundedRect(ctx,60,125,960,185,24,'#393b34');
+  canvasText(ctx,`阳历：${lastResult.solarLine}`,92,166,25,'#eadfce');canvasText(ctx,`阴历：${lastResult.lunarLine}`,92,207,25,'#eadfce');
+  canvasText(ctx,`农历生肖（春节界）：${lastResult.lunarZodiac}　八字生肖（立春界）：${lastResult.baziZodiac}`,92,248,23,'#d4cabc');canvasText(ctx,`换日规则：${lastResult.ruleText}`,92,285,20,'#bdb3a7');
+  const cardY=350,cardW=222,cardH=400,gap=24;
+  lastResult.pillars.forEach((p,index)=>{const x=60+index*(cardW+gap);roundedRect(ctx,x,cardY,cardW,cardH,25,'#30322c','#50524a');roundedRect(ctx,x,cardY,cardW,66,25,'#3b3d36');ctx.fillStyle='#3b3d36';ctx.fillRect(x,cardY+35,cardW,31);canvasText(ctx,p.title,x+cardW/2,cardY+35,23,'#cabbaa','500','center');canvasText(ctx,p.gz[0],x+cardW/2,cardY+135,80,'#efc68e','700','center','"STKaiti", "KaiTi", serif');canvasText(ctx,p.gz[1],x+cardW/2,cardY+225,80,'#f2dfc3','700','center','"STKaiti", "KaiTi", serif');ctx.strokeStyle='#4d4f47';ctx.beginPath();ctx.moveTo(x,cardY+290);ctx.lineTo(x+cardW,cardY+290);ctx.stroke();canvasText(ctx,`${p.wx} · ${p.ss}`,x+cardW/2,cardY+330,20,'#c6bbae','400','center');canvasText(ctx,p.ny,x+cardW/2,cardY+366,20,'#c6bbae','400','center')});
+  roundedRect(ctx,60,785,960,92,20,'#304037','#506456');canvasText(ctx,'日主',90,831,23,'#e2a07e','700');canvasText(ctx,`${lastResult.dayGan}${stemsElement[lastResult.dayGan]}（${stemsYinYang[lastResult.dayGan]}${stemsElement[lastResult.dayGan]}）`,175,831,29,'#f0e7dc','600');
+  const detailY=915,detailW=468,detailH=205;
+  lastResult.pillars.forEach((p,index)=>{const col=index%2,row=Math.floor(index/2),x=60+col*492,y=detailY+row*225;roundedRect(ctx,x,y,detailW,detailH,18,'#373932','#50524a');canvasText(ctx,`${p.title}详情`,x+25,y+31,21,'#df9878','600');canvasText(ctx,`干支：${p.gz}　五行：${p.wx}`,x+25,y+75,22,'#ded4c8');canvasText(ctx,`藏干：${p.hide}`,x+25,y+116,22,'#ded4c8');canvasText(ctx,`纳音：${p.ny}`,x+25,y+157,22,'#ded4c8')});
+  canvasText(ctx,'传统文化排盘工具 · 图片由本机离线生成',540,1418,20,'#aaa195','400','center');canvasText(ctx,'结果不构成医疗、法律、投资或人生决策建议',540,1456,18,'#8f887e','400','center');
+  const url=canvas.toDataURL('image/png');el('exportedImage').src=url;el('downloadImage').href=url;el('downloadImage').download=`八字排盘-${lastResult.solarDate}.png`;el('exportPreview').hidden=false;el('exportPreview').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 document.querySelectorAll('.tab').forEach(button=>button.addEventListener('click',()=>{calendarMode=button.dataset.mode;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===button));el('solarPanel').hidden=calendarMode!=='solar';el('lunarPanel').hidden=calendarMode!=='lunar';el('error').hidden=true}));
 el('calculate').addEventListener('click',()=>{try{el('error').hidden=true;render()}catch(error){el('error').textContent=error.message;el('error').hidden=false;el('result').hidden=true}});
+el('exactTime').addEventListener('change',()=>{if(!el('exactTime').value)return;const hour=Number(el('exactTime').value.slice(0,2)),period=periodForHour(hour);if(period)el('timePeriod').value=String(period[2])});
 init();
 
 </script>
