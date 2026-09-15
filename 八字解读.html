@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>八字解读</title>
+  <style>
+    :root{--paper:#f4ecdf;--card:#fffaf3;--ink:#27271f;--muted:#756d62;--line:#dfd1bf;--red:#994631;--dark:#252820;--dark2:#34372f;--gold:#efc58b;--green:#314138}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#fff9ef 0,transparent 35%),linear-gradient(145deg,#f4ecdf,#e8dece);color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+    main{width:min(980px,100%);margin:auto;padding:clamp(22px,5vw,58px) clamp(14px,4vw,34px) 60px}.eyebrow{margin:0;color:#9b5a46;letter-spacing:.25em;font-size:13px}h1{font-family:"STKaiti","KaiTi",serif;font-size:clamp(42px,8vw,68px);margin:8px 0 8px}.lead{color:var(--muted);line-height:1.8;margin:0 0 28px;max-width:660px}
+    .input-card{background:rgba(255,250,243,.94);border:1px solid rgba(255,255,255,.85);border-radius:28px;padding:clamp(18px,4vw,34px);box-shadow:0 18px 55px rgba(71,56,38,.11)}label{display:block;font-weight:700;margin-bottom:9px}.paste{width:100%;height:58px;border:1px solid var(--line);border-radius:15px;background:#fbf5ec;padding:0 17px;font-size:20px;color:var(--ink);outline:none}.paste:focus,select:focus{border-color:#ad705d;box-shadow:0 0 0 3px rgba(153,70,49,.1)}.hint{font-size:13px;color:#8a8176;line-height:1.65;margin:8px 0 20px}.divider{height:1px;background:var(--line);margin:20px 0;position:relative}.divider span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--card);padding:0 12px;color:#988e82;font-size:12px}
+    .selectors{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.field span{display:block;color:#746b60;font-size:13px;margin:0 0 7px}.field select{width:100%;height:54px;border:1px solid var(--line);border-radius:14px;background:#fbf5ec;padding:0 12px;font-size:18px;color:var(--ink);outline:none}.actions{display:flex;gap:10px;margin-top:23px}.primary,.secondary{border:0;border-radius:14px;min-height:52px;padding:0 22px;font-size:16px;font-weight:750;cursor:pointer}.primary{background:var(--red);color:white;flex:1}.secondary{background:#ede2d3;color:#5e554b}.error{margin:15px 0 0;background:#fff0ec;color:#9a3724;border-radius:12px;padding:12px 14px;line-height:1.6}
+    .result{margin-top:28px;background:var(--dark);color:#eee2d2;border-radius:28px;padding:clamp(18px,4vw,34px);box-shadow:0 20px 60px rgba(30,31,25,.2)}.result-head{display:flex;justify-content:space-between;align-items:center;color:#c9bfb2;font-size:13px}.result-head b{color:#f2d8b3;font-size:18px}.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.pillar{border:1px solid #4c5046;background:#30332c;border-radius:18px;text-align:center;overflow:hidden}.pillar small{display:block;background:#3b3e36;padding:11px;color:#c8baaa}.pillar strong{display:block;font-family:"STKaiti","KaiTi",serif;font-size:48px;line-height:1.28;color:var(--gold);padding-top:10px}.pillar p{font-size:12px;color:#c9c0b4;line-height:1.7;margin:7px 4px 14px}
+    .master{background:var(--green);border:1px solid #52695a;border-radius:16px;padding:16px 18px;margin-bottom:16px}.master b{color:#eca07d}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:var(--dark2);border:1px solid #494d43;border-radius:17px;padding:18px}.box h3{font-size:15px;color:#df9878;margin:0 0 10px}.box p{font-size:14px;line-height:1.85;margin:0;color:#ded4c7}.wide{grid-column:1/-1}.bars{display:grid;gap:9px}.bar-row{display:grid;grid-template-columns:28px 1fr 30px;gap:9px;align-items:center;font-size:13px}.bar{height:9px;background:#45483f;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;border-radius:9px}.wood{background:#79a875}.fire{background:#d8785f}.earth{background:#c9a46b}.metal{background:#d7d1c6}.water{background:#648da7}.notice{margin:16px 0 0;color:#a9a096;font-size:12px;line-height:1.75;text-align:center}
+    [hidden]{display:none!important}@media(max-width:650px){main{padding-left:12px;padding-right:12px}.selectors{grid-template-columns:1fr 1fr}.pillars{gap:7px}.pillar strong{font-size:38px}.pillar p{font-size:10px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.actions{flex-direction:column}.secondary{order:2}}
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">四柱 · 离线结构解读</p>
+  <h1>八字解读</h1>
+  <p class="lead">直接输入已经排好的四柱，查看日主、五行、十神、月令以及天干地支关系。所有计算只在当前设备完成。</p>
+  <section class="input-card">
+    <label for="quickInput">粘贴八字</label>
+    <input id="quickInput" class="paste" autocomplete="off" placeholder="输入年柱、月柱、日柱、时柱" maxlength="24">
+    <p class="hint">可以带空格、顿号或“年柱”等文字；程序会自动提取四组干支。也可以在下方分别选择。</p>
+    <div class="divider"><span>或者分别选择</span></div>
+    <div class="selectors">
+      <label class="field"><span>年柱</span><select id="yearPillar"></select></label>
+      <label class="field"><span>月柱</span><select id="monthPillar"></select></label>
+      <label class="field"><span>日柱</span><select id="dayPillar"></select></label>
+      <label class="field"><span>时柱</span><select id="timePillar"></select></label>
+    </div>
+    <div class="actions"><button id="clear" class="secondary" type="button">清空</button><button id="analyze" class="primary" type="button">开始解读</button></div>
+    <p id="error" class="error" hidden></p>
+  </section>
+  <section id="result" class="result" hidden></section>
+</main>
+<script>
+const stems='甲乙丙丁戊己庚辛壬癸'.split(''),branches='子丑寅卯辰巳午未申酉戌亥'.split('');
+const jiazi=Array.from({length:60},(_,i)=>stems[i%10]+branches[i%12]);
+const labels=['年柱','月柱','日柱','时柱'],selectIds=['yearPillar','monthPillar','dayPillar','timePillar'];
+const stemElement={甲:'木',乙:'木',丙:'火',丁:'火',戊:'土',己:'土',庚:'金',辛:'金',壬:'水',癸:'水'};
+const branchElement={子:'水',丑:'土',寅:'木',卯:'木',辰:'土',巳:'火',午:'火',未:'土',申:'金',酉:'金',戌:'土',亥:'水'};
+const hidden={子:'癸',丑:'己、癸、辛',寅:'甲、丙、戊',卯:'乙',辰:'戊、乙、癸',巳:'丙、戊、庚',午:'丁、己',未:'己、丁、乙',申:'庚、壬、戊',酉:'辛',戌:'戊、辛、丁',亥:'壬、甲'};
+const branchMain={子:'癸',丑:'己',寅:'甲',卯:'乙',辰:'戊',巳:'丙',午:'丁',未:'己',申:'庚',酉:'辛',戌:'戊',亥:'壬'};
+const polarity={甲:1,乙:0,丙:1,丁:0,戊:1,己:0,庚:1,辛:0,壬:1,癸:0};
+const produces={木:'火',火:'土',土:'金',金:'水',水:'木'},controls={木:'土',土:'水',水:'火',火:'金',金:'木'};
+const masterImages={甲:'传统取象为参天之木，重视方向、成长与担当。',乙:'传统取象为花草藤木，强调适应、连接与细致。',丙:'传统取象为太阳之火，强调表达、热度与公开。',丁:'传统取象为灯烛之火，强调专注、感受与持续。',戊:'传统取象为山岳厚土，强调稳定、承载与原则。',己:'传统取象为田园湿土，强调培育、整合与务实。',庚:'传统取象为刚健之金，强调行动、判断与执行。',辛:'传统取象为珠玉精金，强调品质、边界与精细。',壬:'传统取象为江海之水，强调流动、视野与应变。',癸:'传统取象为雨露之水，强调观察、渗透与滋养。'};
+const el=id=>document.getElementById(id);
+
+function tenGod(day,target){
+  if(day===target)return'比肩';
+  const de=stemElement[day],te=stemElement[target],same=polarity[day]===polarity[target];
+  if(de===te)return same?'比肩':'劫财';
+  if(produces[te]===de)return same?'偏印':'正印';
+  if(produces[de]===te)return same?'食神':'伤官';
+  if(controls[de]===te)return same?'偏财':'正财';
+  return same?'七杀':'正官';
+}
+
+function normalizeInput(text){
+  const pairs=text.match(/[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]/g)||[];
+  return pairs.slice(0,4);
+}
+
+function validate(pillars){
+  if(pillars.length!==4)throw new Error('请输入完整的年柱、月柱、日柱和时柱，共四组干支。');
+  pillars.forEach((p,i)=>{if(!jiazi.includes(p))throw new Error(`${labels[i]}“${p}”不是有效的六十甲子组合。`)});
+  const yearStem=stems.indexOf(pillars[0][0]),monthStem=stems.indexOf(pillars[1][0]),monthBranch=branches.indexOf(pillars[1][1]);
+  const monthOffset=(monthBranch-2+12)%12,expectedMonthStem=((yearStem%5)*2+2+monthOffset)%10;
+  if(monthStem!==expectedMonthStem)throw new Error(`年柱与月柱不匹配：按${pillars[0]}年推算，${pillars[1][1]}月不能配${pillars[1][0]}干。请检查四柱顺序。`);
+  const dayStem=stems.indexOf(pillars[2][0]),timeStem=stems.indexOf(pillars[3][0]),timeBranch=branches.indexOf(pillars[3][1]);
+  const expectedTimeStem=((dayStem%5)*2+timeBranch)%10;
+  if(timeStem!==expectedTimeStem)throw new Error(`日柱与时柱不匹配：按${pillars[2][0]}日推算，${pillars[3][1]}时不能配${pillars[3][0]}干。请检查输入。`);
+}
+
+function relationText(dayElement,monthElement){
+  if(dayElement===monthElement)return`月令主五行与日主同为${dayElement}，季节环境对日主有同类呼应。`;
+  if(produces[monthElement]===dayElement)return`月令${monthElement}生助日主${dayElement}，季节环境具有生扶作用。`;
+  if(produces[dayElement]===monthElement)return`日主${dayElement}生月令${monthElement}，季节环境使日主有所泄秀与输出。`;
+  if(controls[monthElement]===dayElement)return`月令${monthElement}克制日主${dayElement}，季节环境对日主形成约束。`;
+  return`日主${dayElement}克月令${monthElement}，季节环境会使日主有所消耗。`;
+}
+
+function pairRelations(pillars){
+  const zhis=pillars.map(p=>p[1]),found=[];
+  const groups={六合:['子丑','寅亥','卯戌','辰酉','巳申','午未'],相冲:['子午','丑未','寅申','卯酉','辰戌','巳亥'],相害:['子未','丑午','寅巳','卯辰','申亥','酉戌'],相破:['子酉','丑辰','寅亥','卯午','巳申','未戌']};
+  for(let i=0;i<4;i++)for(let j=i+1;j<4;j++)for(const [name,pairs] of Object.entries(groups))if(pairs.some(pair=>pair.includes(zhis[i])&&pair.includes(zhis[j])))found.push(`${labels[i]}${zhis[i]}与${labels[j]}${zhis[j]}${name}`);
+  if(zhis.includes('子')&&zhis.includes('卯'))found.push('子卯相刑');
+  if(['寅','巳','申'].every(x=>zhis.includes(x)))found.push('寅巳申三刑齐全');
+  if(['丑','未','戌'].every(x=>zhis.includes(x)))found.push('丑未戌三刑齐全');
+  for(const z of ['辰','午','酉','亥'])if(zhis.filter(x=>x===z).length>1)found.push(`${z}${z}自刑`);
+  const gans=pillars.map(p=>p[0]),combos=[['甲己','合土'],['乙庚','合金'],['丙辛','合水'],['丁壬','合木'],['戊癸','合火']];
+  for(let i=0;i<4;i++)for(let j=i+1;j<4;j++)for(const [pair,result] of combos)if(pair.includes(gans[i])&&pair.includes(gans[j]))found.push(`${labels[i]}${gans[i]}与${labels[j]}${gans[j]}${result}`);
+  return [...new Set(found)];
+}
+
+function analyze(pillars){
+  validate(pillars);
+  const dayGan=pillars[2][0],dayElement=stemElement[dayGan],monthZhi=pillars[1][1],monthElement=branchElement[monthZhi];
+  const counts={木:0,火:0,土:0,金:0,水:0};
+  pillars.forEach(p=>{counts[stemElement[p[0]]]++;counts[branchElement[p[1]]]++});
+  const max=Math.max(...Object.values(counts),1),relations=pairRelations(pillars);
+  const pillarCards=pillars.map((p,i)=>`<article class="pillar"><small>${labels[i]}</small><strong>${p[0]}<br>${p[1]}</strong><p>${stemElement[p[0]]}${i===2?' · 日主':` · ${tenGod(dayGan,p[0])}`}<br>${branchElement[p[1]]} · 主气${branchMain[p[1]]}${i===2?'':`（${tenGod(dayGan,branchMain[p[1]])}）`}<br>藏干：${hidden[p[1]]}</p></article>`).join('');
+  const colors={木:'wood',火:'fire',土:'earth',金:'metal',水:'water'};
+  const bars=Object.entries(counts).map(([name,value])=>`<div class="bar-row"><span>${name}</span><div class="bar"><i class="${colors[name]}" style="width:${value/max*100}%"></i></div><b>${value}</b></div>`).join('');
+  const gods=pillars.map((p,i)=>`${labels[i]}：天干${p[0]}为${i===2?'日主':tenGod(dayGan,p[0])}；地支${p[1]}主气${branchMain[p[1]]}为${tenGod(dayGan,branchMain[p[1]])}`).join('<br>');
+  el('result').innerHTML=`<div class="result-head"><b>四柱结构解读</b><span>${pillars.join('　')}</span></div><div class="pillars">${pillarCards}</div><div class="master"><b>日主：${dayGan}${dayElement}（${polarity[dayGan]?'阳':'阴'}${dayElement}）</b><br>${masterImages[dayGan]}</div><div class="grid"><article class="box"><h3>月令与季节</h3><p>月支为${monthZhi}，主五行属${monthElement}。${relationText(dayElement,monthElement)}月令是判断旺衰的重要依据，但不能脱离通根、藏干和全局组合单独定强弱。</p></article><article class="box"><h3>表层五行分布</h3><div class="bars">${bars}</div><p style="margin-top:12px">这里只统计四个天干和四个地支的主五行，用于观察分布，不等同于喜用神判断。</p></article><article class="box"><h3>十神定位</h3><p>${gods}</p></article><article class="box"><h3>天干地支关系</h3><p>${relations.length?relations.join('；')+'。':'四柱表层未形成程序所列的合、冲、刑、害、破关系。'}<br>关系出现只表示结构连接或牵制，不能单独判定吉凶。</p></article><article class="box wide"><h3>怎样使用这份结果</h3><p>先看日主代表的自身特征，再看月令提供的季节背景；十神用于理解各柱相对日主的角色，合冲刑害用于寻找结构中的互动。身强身弱、格局和喜用神需要综合月令、通根、透干、组合及流派规则，本工具不以简单计数给出武断结论。</p></article></div><p class="notice">本页面只做传统文化结构化解读，不预测确定事件，也不构成医疗、法律、投资或人生决策建议。</p>`;
+  el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+function selectedPillars(){const parsed=normalizeInput(el('quickInput').value);return parsed.length?parsed:selectIds.map(id=>el(id).value)}
+selectIds.forEach((id,index)=>{const select=el(id);select.add(new Option(`选择${labels[index]}`,'',true,true));jiazi.forEach(value=>select.add(new Option(value,value)))});
+el('quickInput').addEventListener('input',()=>{const parsed=normalizeInput(el('quickInput').value);parsed.forEach((value,i)=>el(selectIds[i]).value=value)});
+el('analyze').addEventListener('click',()=>{try{el('error').hidden=true;const pillars=selectedPillars();analyze(pillars)}catch(error){el('error').textContent=error.message;el('error').hidden=false;el('result').hidden=true}});
+el('clear').addEventListener('click',()=>{el('quickInput').value='';selectIds.forEach(id=>el(id).value='');el('error').hidden=true;el('result').hidden=true});
+
+</script>
+</body>
+</html>
+
