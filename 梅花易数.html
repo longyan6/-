@@ -15,7 +15,21 @@
     .datetime-shell input[type="datetime-local"]{display:flex;width:100%!important;max-width:100%!important;min-width:0!important;height:56px;padding:0 15px;border:0;box-shadow:none;background:transparent;color:var(--ink);font-size:17px;font-weight:500;line-height:normal;text-align:center;-webkit-appearance:none;appearance:none;inline-size:100%;max-inline-size:100%;min-inline-size:0;align-items:center;justify-content:center}
     .datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{display:flex;width:100%;height:100%;min-width:0;margin:0;padding:0;overflow:hidden;align-items:center;justify-content:center;color:var(--ink);font-size:17px;line-height:normal;text-align:center;white-space:nowrap}
     .datetime-shell input[type="datetime-local"]::-webkit-datetime-edit{display:flex;height:100%;margin:0;padding:0;align-items:center;justify-content:center;line-height:normal}
+    .topic-label{margin-top:16px}
+    .reading{margin-top:16px;overflow:hidden;border:1px solid #4b5047;border-radius:17px;background:#30322c}
+    .reading-title{padding:20px;border-bottom:1px solid #484b43;background:#373a33}
+    .reading-title small{color:#d38c6d;letter-spacing:.16em}
+    .reading-title h3{margin:8px 0 0;color:#f2e4cf;font-size:21px}
+    .reading-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#484b43}
+    .reading-item{min-width:0;padding:19px;background:#30322c}
+    .reading-item b{color:#e2a07e;font-size:13px}
+    .reading-item p{margin:8px 0 0;color:#cec5ba;font-size:13px;line-height:1.75}
+    .reading-summary{padding:20px;border-top:1px solid #484b43;background:#354038}
+    .reading-summary b{color:#efaa86}
+    .reading-summary p{margin:9px 0 0;color:#e1d9ce;line-height:1.8}
+    .reading-caution{margin:0;padding:0 20px 18px;background:#354038;color:#aeb3aa;font-size:11px;line-height:1.65}
     @media(max-width:620px){.datetime-shell input[type="datetime-local"],.datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{font-size:16px}}
+    @media(max-width:620px){.reading-grid{grid-template-columns:minmax(0,1fr)}.reading-title,.reading-item,.reading-summary{padding:17px}}
   </style>
 </head>
 <body>
@@ -29,6 +43,15 @@
     <section class="card">
       <label for="question">所问事项</label>
       <textarea id="question" maxlength="100" placeholder="一次只问一件具体的事"></textarea>
+      <label for="topicType" class="topic-label">所问类型</label>
+      <select id="topicType">
+        <option value="general">综合事项</option>
+        <option value="career">事业工作</option>
+        <option value="wealth">财务求财</option>
+        <option value="love">感情关系</option>
+        <option value="study">学习考试</option>
+        <option value="health">健康生活</option>
+      </select>
     </section>
 
     <section class="card">
@@ -68,7 +91,7 @@
 
     <section id="result" class="result" hidden></section>
 
-    <footer>本工具用于传统文化学习与自我反思，不把卦象作为医疗、投资、法律或其他专业结论。</footer>
+    <footer>本工具采用内置规则进行结构化解读，全程可离线使用。内容用于传统文化学习与自我反思，不作为医疗、投资、法律或其他专业结论。</footer>
   </main>
   <script>
 const trigrams=[
@@ -96,6 +119,56 @@ const hexagramsByLower={
 const hexagramMap={};
 codes.forEach(lower=>codes.forEach((upper,i)=>hexagramMap[`${upper}-${lower}`]=hexagramsByLower[lower][i]));
 const branchNames=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const hexagramReadings=[null,
+  ['刚健开创','条件允许时主动担当，但要避免一味逞强。'],['包容承载','先接纳现实、配合环境，以稳定和耐心推进。'],
+  ['起步艰难','事情刚开始容易杂乱，宜先建立秩序和基础。'],['启蒙学习','信息尚不充分，宜求教、核实并避免凭猜测行动。'],
+  ['等待时机','条件尚未齐备，守住准备比仓促推进更重要。'],['争议冲突','先明确事实和边界，减少正面争执，必要时寻求公正协调。'],
+  ['组织纪律','需要统一目标、分工和规则，行动才有力量。'],['亲近联合','合作有利，但应先确认彼此是否真诚信任。'],
+  ['小有积蓄','力量正在积累，适合处理细节，不宜强行突破。'],['谨慎履行','处境有风险，按规则、守分寸可以减少问题。'],
+  ['通达和顺','上下协调、条件顺畅，宜把握机会并保持谦和。'],['闭塞不通','沟通或条件受阻，宜保存实力、等待转机。'],
+  ['求同合作','公开坦诚、寻找共同目标，有助于聚合不同的人。'],['资源充足','拥有条件时更要妥善管理，避免因自满而浪费。'],
+  ['谦逊有度','降低姿态、实事求是，反而更容易得到支持。'],['顺势而动','气氛有利但不可只凭兴奋，行动前要做好准备。'],
+  ['随顺变化','顺应趋势与合适的人，同时保留自己的原则。'],['整顿积弊','旧问题需要清理修复，先找根源再谈发展。'],
+  ['接近成长','机会正在靠近，适合主动关照细节并建立关系。'],['观察审视','暂缓表态，从全局和他人反应中寻找真实情况。'],
+  ['果断清障','关键障碍需要明确处理，规则和证据不可缺少。'],['修饰表达','形式能够加分，但不能让包装掩盖实际内容。'],
+  ['剥落收缩','基础正在减弱，宜停止扩张、保护核心。'],['回归复原','偏离后出现重新开始的机会，先回到正确轨道。'],
+  ['守正自然','减少妄念和侥幸，按事实与正当方式处理。'],['积蓄克制','储备能力和资源，暂时克制才能承担更大的事。'],
+  ['滋养言行','关注输入、饮食、学习与说话方式，持续养正。'],['压力过重','责任或结构已接近承受上限，需要分担和调整。'],
+  ['反复险阻','问题可能不止一次，保持警觉并建立可靠流程。'],['光明依附','看清重点并依托合适条件，避免只追求表面亮眼。'],
+  ['感应互动','彼此影响明显，真诚回应比单方面强求有效。'],['恒久坚持','稳定节奏、长期执行，比短期变化更重要。'],
+  ['适时退让','环境不利时主动拉开距离，是保存实力而非失败。'],['力量增长','有推动力但不可滥用，越强越要守规则。'],
+  ['逐步晋升','趋势向上，宜凭实际表现稳步前进。'],['隐藏锋芒','外部环境不明时保护自己，保持内在判断。'],
+  ['内部秩序','先理顺角色、责任和沟通，外部问题才容易解决。'],['分歧对立','差异客观存在，先求小同，不宜勉强一致。'],
+  ['行进困难','前方有阻，宜借助支持、调整路线而非硬闯。'],['解除缓和','压力开始松动，及时处理遗留问题才能真正轻松。'],
+  ['减少取舍','做减法、控制消耗，把资源留给最重要的部分。'],['增益成长','适合改善与投入，也应让收益惠及整体。'],
+  ['决断突破','问题已到必须表态的阶段，果断但不可粗暴。'],['突然相遇','新机会或新因素来得突然，先观察其长期影响。'],
+  ['聚集整合','人和资源汇聚，关键在共同目标和组织能力。'],['稳步上升','依靠持续努力逐层推进，不必急于一步到位。'],
+  ['受困磨炼','外部空间有限，先守住信念与基本盘。'],['共同资源','维护长期可用的资源与制度，比争夺眼前利益重要。'],
+  ['改革更新','旧方式已不适用，变化需要正当时机和清楚共识。'],['更新成器','通过重新组合资源实现升级，重视核心能力。'],
+  ['震动警醒','突发变化带来惊动，先稳住再迅速回应。'],['停止安定','知道何时停止，安静下来才能看清边界。'],
+  ['循序渐进','变化需要过程，稳定步骤胜过急于求成。'],['位置未稳','关系或条件不完全匹配，尤其要守礼与明确边界。'],
+  ['丰盛高峰','成果明显但高峰难久，及时管理和分享。'],['旅途暂居','环境具有临时性，保持灵活并尊重当地规则。'],
+  ['柔顺深入','用温和、反复的方式进入问题，避免摇摆不定。'],['喜悦交流','沟通和互惠有利，但要防止只说好听的话。'],
+  ['涣散疏通','先化解隔阂、重新聚拢人心和资源。'],['节制边界','设置适度规则可以长久，过严也会造成压力。'],
+  ['诚信感通','信任来自内外一致，承诺必须能够兑现。'],['小事谨慎','适合处理局部和细节，大动作需要更加保守。'],
+  ['已经完成','成果初成，最需要防止松懈和细节反复。'],['尚未完成','仍在过渡期，谨慎完成最后步骤，不宜提前庆祝。']
+];
+const topicGuides={
+  general:['综合事项','把卦象当作梳理现状与行动顺序的提示。'],
+  career:['事业工作','重点检查目标、职责、合作关系和推进节奏。'],
+  wealth:['财务求财','重点检查现金流、成本、风险和信息真实性，不据此直接投资。'],
+  love:['感情关系','重点观察沟通、边界、付出是否平衡以及双方真实意愿。'],
+  study:['学习考试','重点安排基础、方法、练习和持续执行，结果仍取决于实际准备。'],
+  health:['健康生活','只用于反思作息与压力；身体不适应咨询合格医务人员。']
+};
+const movingPositions=[
+  '初爻动，变化刚刚开始，宜先处理基础与第一步。',
+  '二爻动，重点在内部执行、配合与稳定关系。',
+  '三爻动，正处于由内向外的关口，压力较明显，行动要防止过急。',
+  '四爻动，事情开始进入外部环境，重点在选择方向和应对变化。',
+  '五爻动，核心人物、主要决定或整体协调最为关键。',
+  '上爻动，事情接近阶段顶点，应留意过度、反转或进入下一周期。'
+];
 let mode='time';
 const el=id=>document.getElementById(id);
 const panels={time:el('timePanel'),numbers:el('numbersPanel'),manual:el('manualPanel')};
@@ -155,13 +228,30 @@ function relation(body,use){
   return`用克体：用卦${use.element}克体卦${body.element}，通常提示外部压力或阻力。`;
 }
 
+function elementRelationAdvice(body,use){
+  if(body.element===use.element)return`体用同属${body.element}，双方较容易协调，但仍需用实际行动维持一致。`;
+  const produces={木:'火',火:'土',土:'金',金:'水',水:'木'};
+  const controls={木:'土',土:'水',水:'火',火:'金',金:'木'};
+  if(produces[use.element]===body.element)return`用卦生体，外部条件对自身有支持，可主动承接但不要完全依赖。`;
+  if(produces[body.element]===use.element)return`体卦生用，自己可能需要投入更多时间、精力或资源，应先衡量承受能力。`;
+  if(controls[body.element]===use.element)return`体卦克用，自身有推动或管理空间，但过程需要持续用力。`;
+  return`用卦克体，外部压力较强，宜降低风险、寻求帮助并保留余地。`;
+}
+
+function readingMarkup(base,middle,change,lines,data,body,use){
+  const baseText=hexagramReadings[base.number],middleText=hexagramReadings[middle.number],changeText=hexagramReadings[change.number];
+  const topic=topicGuides[el('topicType').value]||topicGuides.general;
+  const direction=lines[data.moving-1]?'本爻由阳转阴，象征由主动、扩张转向收敛、协调。':'本爻由阴转阳，象征由观察、承接转向行动、明确。';
+  return`<section class="reading"><div class="reading-title"><small>离线结构化解卦 · ${topic[0]}</small><h3>${base.fullName}之${change.fullName}</h3></div><div class="reading-grid"><div class="reading-item"><b>本卦 · 当前状态</b><p><strong>${baseText[0]}</strong>：${baseText[1]}</p></div><div class="reading-item"><b>互卦 · 内部过程</b><p><strong>${middleText[0]}</strong>：${middleText[1]}</p></div><div class="reading-item"><b>动爻 · 关键转折</b><p>${movingPositions[data.moving-1]}${direction}</p></div><div class="reading-item"><b>变卦 · 变化方向</b><p><strong>${changeText[0]}</strong>：${changeText[1]}</p></div><div class="reading-item"><b>体卦 · 自身</b><p>${body.name}为${body.nature}，五行属${body.element}，代表自身所处位置与承受能力。</p></div><div class="reading-item"><b>用卦 · 所问之事</b><p>${use.name}为${use.nature}，五行属${use.element}。${elementRelationAdvice(body,use)}</p></div></div><div class="reading-summary"><b>${topic[0]}综合提示</b><p>当前主题是“${baseText[0]}”，内部经过“${middleText[0]}”，随后趋向“${changeText[0]}”。${topic[1]}结合动爻位置，先处理最关键的一步，再根据实际反馈调整。</p></div><p class="reading-caution">这是依据卦象结构和内置规则生成的传统文化解释，不代表确定预言；重要决定仍应依据事实和专业意见。</p></section>`;
+}
+
 function lineMarkup(lines,moving=0){return lines.slice().reverse().map((yang,i)=>`<div class="line ${yang?'yang':'yin'}">${moving===6-i?'<em>×</em>':''}</div>`).join('')}
 function card(role,hex,lines,moving=0){return`<div class="hex-card"><span class="role">${role}</span><div class="lines">${lineMarkup(lines,moving)}</div><h3>${hex.name}</h3><p>${hex.fullName} · 第${hex.number}卦</p></div>`}
 function renderResult(data){
   const base=lookup(data.upper,data.lower),lines=linesOf(data.upper,data.lower),middle=mutual(lines),change=changed(lines,data.moving);
   const middleLines=linesOf(middle.upper,middle.lower),changedLines=[...lines];changedLines[data.moving-1]=!changedLines[data.moving-1];
   const movingInLower=data.moving<=3,body=movingInLower?data.upper:data.lower,use=movingInLower?data.lower:data.upper;
-  el('result').innerHTML=`<div class="result-head"><span>${mode==='time'?'时间起卦':mode==='numbers'?'双数起卦':'手动起卦'}</span><span>${data.time}</span></div>${el('question').value.trim()?`<p class="question">“${escapeHtml(el('question').value.trim())}”</p>`:''}<div class="process">${data.process}</div><div class="hex-grid">${card('本卦',base,lines,data.moving)}${card('互卦',middle,middleLines)}${card('变卦',change,changedLines)}</div><div class="body-grid"><div class="body-box"><small>体卦 · 自身</small><h4>${body.name}为${body.nature} · ${body.element}</h4><p>动爻位于${movingInLower?'下卦':'上卦'}，因此不动的${movingInLower?'上卦':'下卦'}取为体。</p></div><div class="body-box"><small>用卦 · 所问之事</small><h4>${use.name}为${use.nature} · ${use.element}</h4><p>发生变化的${movingInLower?'下卦':'上卦'}取为用。</p></div></div><div class="relation"><b>体用关系：</b>${relation(body,use)}</div>`;
+  el('result').innerHTML=`<div class="result-head"><span>${mode==='time'?'时间起卦':mode==='numbers'?'双数起卦':'手动起卦'}</span><span>${data.time}</span></div>${el('question').value.trim()?`<p class="question">“${escapeHtml(el('question').value.trim())}”</p>`:''}<div class="process">${data.process}</div><div class="hex-grid">${card('本卦',base,lines,data.moving)}${card('互卦',middle,middleLines)}${card('变卦',change,changedLines)}</div><div class="body-grid"><div class="body-box"><small>体卦 · 自身</small><h4>${body.name}为${body.nature} · ${body.element}</h4><p>动爻位于${movingInLower?'下卦':'上卦'}，因此不动的${movingInLower?'上卦':'下卦'}取为体。</p></div><div class="body-box"><small>用卦 · 所问之事</small><h4>${use.name}为${use.nature} · ${use.element}</h4><p>发生变化的${movingInLower?'下卦':'上卦'}取为用。</p></div></div><div class="relation"><b>体用关系：</b>${relation(body,use)}</div>${readingMarkup(base,middle,change,lines,data,body,use)}`;
   el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
