@@ -9,20 +9,21 @@
   <!-- ===== 样式区：修改页面颜色、字号和布局 ===== -->
   <style>
 :root{--paper:#f5f0e8;--surface:#fffdf8;--ink:#252720;--muted:#746f65;--line:#ded5c8;--red:#98472f;--dark:#272a23;--gold:#efd0a0;--soft:#ebe3d6}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0,#fffaf0 0,transparent 35rem),linear-gradient(145deg,#f7f1e8,#e9dfd0);color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}[hidden]{display:none!important}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0,#fffaf0 0,transparent 35rem),linear-gradient(145deg,#f7f1e8,#e9dfd0);color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}body.detail-mode{background:var(--dark)}
 button{font:inherit}.topbar{width:min(1160px,100%);margin:auto;padding:42px 24px 24px;display:flex;align-items:end;justify-content:space-between;gap:28px}.eyebrow{margin:0;color:var(--red);font-size:13px;letter-spacing:.25em}.topbar h1{margin:7px 0 0;font:700 clamp(38px,6vw,62px)/1.1 "STKaiti","KaiTi",serif}.intro{max-width:440px;margin:0;color:var(--muted);font-size:15px;line-height:1.75}
 main{width:min(1160px,calc(100% - 24px));margin:auto;padding:14px 0 46px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;border-radius:15px;background:#e6dccd}.tab{min-height:50px;border:0;border-radius:11px;background:transparent;color:#776f64;cursor:pointer}.tab.active{background:var(--surface);color:var(--ink);font-weight:750;box-shadow:0 4px 18px rgba(68,49,31,.09)}
 .directory-head{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:32px 8px 18px;border-bottom:2px solid var(--red)}.directory-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.directory-head h2{margin:5px 0 0;font:700 32px "STKaiti","KaiTi",serif}.directory-head>p{max-width:570px;text-align:right}.directory{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line)}
 .gua-card{position:relative;display:grid;grid-template-columns:34px 90px 1fr;align-items:center;min-height:142px;padding:16px 15px;border:0;background:var(--surface);color:var(--ink);text-align:left;cursor:pointer}.gua-card:hover{background:#fbf4e9}.gua-card:focus-visible{z-index:1;outline:3px solid #b16a53;outline-offset:-3px}.gua-number{color:#989085;font-size:13px;text-align:right;padding-right:7px;font-variant-numeric:tabular-nums}.gua-lines{width:72px;display:flex;flex-direction:column;gap:7px}.yao{display:block;height:7px;border-radius:5px}.yao.yang{background:currentColor}.yao.yin{display:flex;justify-content:space-between}.yao.yin::before,.yao.yin::after{content:"";display:block;width:29px;border-radius:5px;background:currentColor}.gua-label{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.gua-label small{color:#8a8277;font-size:12px;line-height:1.1;margin-bottom:4px}.gua-label strong{font:700 27px/1.05 "STKaiti","KaiTi",serif}.gua-label span{margin-top:6px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.detail-dialog{width:min(760px,calc(100% - 28px));max-height:calc(100vh - 28px);padding:0;border:0;border-radius:26px;background:var(--dark);color:#eee3d4;box-shadow:0 28px 90px rgba(25,25,20,.4);overflow:auto}.detail-dialog::backdrop{background:rgba(25,24,20,.58);backdrop-filter:blur(4px)}.close-detail{position:sticky;float:right;right:18px;top:18px;z-index:2;width:44px;height:44px;margin:18px;border:1px solid #565a4f;border-radius:50%;background:#363a31;color:#eadbc6;font-size:27px;line-height:1;cursor:pointer}.detail-content{padding:46px clamp(22px,5vw,54px) 52px}.detail-hero{display:grid;grid-template-columns:160px 1fr;gap:28px;align-items:center;padding-bottom:30px;border-bottom:1px solid #4d5147}.detail-symbol{width:150px;display:flex;flex-direction:column;gap:12px}.detail-symbol .yao{height:12px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:61px}.detail-meta{color:#c8b9a8;font-size:13px}.detail-meta b{display:block;margin:7px 0 0;color:var(--gold);font:700 clamp(44px,8vw,72px)/1.05 "STKaiti","KaiTi",serif}.detail-meta .pronunciation{display:block;color:#d8c4a7;font-size:17px;letter-spacing:.08em}.detail-meta .full-name{display:block;margin-top:9px;color:#c8b9a8}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.detail-box{padding:20px;border:1px solid #494d43;border-radius:16px;background:#32352e}.detail-box.wide{grid-column:1/-1}.detail-box h3{margin:0 0 9px;color:#db9475;font-size:14px;letter-spacing:.08em}.detail-box p{margin:0;color:#ddd3c6;font-size:16px;line-height:1.8}.components{display:grid;grid-template-columns:1fr 1fr;gap:10px}.component{padding:14px;border-radius:12px;background:#3b3e36}.component small{display:block;color:#aeaa9e;font-size:12px}.component b{display:block;margin-top:5px;color:#f0d3a8;font-size:18px}
+.detail-page{width:min(980px,100%);min-height:100vh;margin:auto;padding:24px clamp(18px,5vw,56px) 70px;background:var(--dark);color:#eee3d4}.back-directory{position:sticky;top:12px;z-index:2;min-height:44px;padding:0 18px;border:1px solid #565a4f;border-radius:999px;background:rgba(54,58,49,.96);color:#eadbc6;cursor:pointer;box-shadow:0 8px 24px rgba(15,15,12,.22)}.back-directory:hover{background:#44483e}.back-directory:focus-visible{outline:3px solid #db9475;outline-offset:3px}.detail-content{padding:34px 0 0}.detail-hero{display:grid;grid-template-columns:180px 1fr;gap:38px;align-items:center;padding:20px 0 42px;border-bottom:1px solid #4d5147}.detail-symbol{width:170px;display:flex;flex-direction:column;gap:13px}.detail-symbol .yao{height:13px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:69px}.detail-meta{color:#c8b9a8;font-size:14px}.detail-meta b{display:block;margin:7px 0 0;color:var(--gold);font:700 clamp(52px,8vw,78px)/1.05 "STKaiti","KaiTi",serif}.detail-meta .pronunciation{display:block;color:#d8c4a7;font-size:18px;letter-spacing:.08em}.detail-meta .full-name{display:block;margin-top:9px;color:#c8b9a8}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}.detail-box{padding:24px;border:1px solid #494d43;border-radius:16px;background:#32352e}.detail-box.wide{grid-column:1/-1}.detail-box h3{margin:0 0 10px;color:#db9475;font-size:15px;letter-spacing:.08em}.detail-box p{margin:0;color:#ddd3c6;font-size:17px;line-height:1.9}.components{display:grid;grid-template-columns:1fr 1fr;gap:12px}.component{padding:16px;border-radius:12px;background:#3b3e36}.component small{display:block;color:#aeaa9e;font-size:13px}.component b{display:block;margin-top:5px;color:#f0d3a8;font-size:19px}
 footer{padding:0 20px 36px;color:#837a6e;font-size:12px;text-align:center}
 @media(max-width:900px){.directory{grid-template-columns:repeat(3,minmax(0,1fr))}.topbar{align-items:flex-start;flex-direction:column}.intro{max-width:680px}}
-@media(max-width:650px){.topbar{padding:26px 17px 17px;gap:13px}.topbar h1{font-size:43px}main{width:min(100% - 16px,1160px);padding-top:8px}.directory-head{align-items:flex-start;flex-direction:column;gap:8px;padding:25px 5px 14px}.directory-head>p{text-align:left}.directory{grid-template-columns:repeat(2,minmax(0,1fr))}.gua-card{grid-template-columns:25px 68px 1fr;min-height:124px;padding:13px 8px}.gua-lines{width:56px;gap:6px}.yao{height:6px}.yao.yin::before,.yao.yin::after{width:23px}.gua-label strong{font-size:24px}.detail-dialog{width:calc(100% - 16px);max-height:calc(100vh - 16px);border-radius:22px}.detail-content{padding:36px 20px 34px}.detail-hero{grid-template-columns:110px 1fr;gap:19px}.detail-symbol{width:106px;gap:9px}.detail-symbol .yao{height:9px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:43px}.detail-grid{grid-template-columns:1fr}.detail-box.wide{grid-column:auto}}
+@media(max-width:650px){.topbar{padding:26px 17px 17px;gap:13px}.topbar h1{font-size:43px}main{width:min(100% - 16px,1160px);padding-top:8px}.directory-head{align-items:flex-start;flex-direction:column;gap:8px;padding:25px 5px 14px}.directory-head>p{text-align:left}.directory{grid-template-columns:repeat(2,minmax(0,1fr))}.gua-card{grid-template-columns:25px 68px 1fr;min-height:124px;padding:13px 8px}.gua-lines{width:56px;gap:6px}.yao{height:6px}.yao.yin::before,.yao.yin::after{width:23px}.gua-label strong{font-size:24px}.detail-page{padding:14px 16px 48px}.back-directory{top:8px}.detail-content{padding-top:22px}.detail-hero{grid-template-columns:116px 1fr;gap:20px;padding:14px 0 30px}.detail-symbol{width:110px;gap:9px}.detail-symbol .yao{height:9px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:45px}.detail-grid{grid-template-columns:1fr}.detail-box.wide{grid-column:auto}.detail-box{padding:20px}.detail-box p{font-size:16px}}
 @media(max-width:380px){.directory{grid-template-columns:1fr}.gua-card{grid-template-columns:30px 82px 1fr}.gua-lines{width:66px}.yao.yin::before,.yao.yin::after{width:27px}}
 
   </style>
 </head>
 <body>
+  <div id="catalogPage">
   <header class="topbar">
     <div>
       <p class="eyebrow">易经基础资料</p>
@@ -43,12 +44,13 @@ footer{padding:0 20px 36px;color:#837a6e;font-size:12px;text-align:center}
     <section id="directory" class="directory" aria-live="polite"></section>
   </main>
 
-  <dialog id="detailDialog" class="detail-dialog">
-    <article id="detailContent" class="detail-content"></article>
-    <button id="closeDetail" class="close-detail" type="button" aria-label="关闭详细介绍">×</button>
-  </dialog>
-
   <footer>卦象从下往上读：最下面一爻为初爻，最上面一爻为上爻。</footer>
+  </div>
+
+  <main id="detailPage" class="detail-page" hidden>
+    <button id="backToDirectory" class="back-directory" type="button">← 返回目录</button>
+    <article id="detailContent" class="detail-content"></article>
+  </main>
   <!-- ===== 资料区：以后修改卦象介绍，主要编辑这里 ===== -->
   <script>
 /*
@@ -161,7 +163,8 @@ window.ICHING_DATA = (() => {
   <script>
 const {trigrams,hexagrams}=window.ICHING_DATA;
 const directory=document.getElementById('directory');
-const dialog=document.getElementById('detailDialog');
+const catalogPage=document.getElementById('catalogPage');
+const detailPage=document.getElementById('detailPage');
 const detail=document.getElementById('detailContent');
 const sectionTitle=document.getElementById('sectionTitle');
 const sectionKicker=document.getElementById('sectionKicker');
@@ -206,20 +209,39 @@ function openDetail(type,number,updateHash=true){
   const list=type==='trigram'?trigrams:hexagrams,item=list.find(entry=>entry.number===number);
   if(!item)return;
   detail.innerHTML=detailMarkup(item,type);
-  if(!dialog.open)dialog.showModal();
-  if(updateHash)history.replaceState(null,'',`#${type}-${number}`);
+  catalogPage.hidden=true;
+  detailPage.hidden=false;
+  document.body.classList.add('detail-mode');
+  window.scrollTo(0,0);
+  if(updateHash)history.pushState({fromCatalog:true,view:currentView},'',`#${type}-${number}`);
 }
-function closeDetail(){if(dialog.open)dialog.close();history.replaceState(null,'',location.pathname+location.search)}
+function closeDetail(){
+  detailPage.hidden=true;
+  catalogPage.hidden=false;
+  document.body.classList.remove('detail-mode');
+  history.replaceState(null,'',location.pathname+location.search);
+  window.scrollTo(0,0);
+}
+function routeFromAddress(){
+  const match=location.hash.match(/^#(trigram|hexagram)-(\d+)$/);
+  if(match){
+    const view=match[1]==='trigram'?'trigrams':'hexagrams';
+    renderDirectory(view);
+    openDetail(match[1],Number(match[2]),false);
+  }else{
+    detailPage.hidden=true;
+    catalogPage.hidden=false;
+    document.body.classList.remove('detail-mode');
+  }
+}
 
 document.querySelector('.tabs').addEventListener('click',event=>{const button=event.target.closest('.tab');if(button)renderDirectory(button.dataset.view)});
 directory.addEventListener('click',event=>{const card=event.target.closest('.gua-card');if(card)openDetail(card.dataset.type,Number(card.dataset.number))});
-document.getElementById('closeDetail').addEventListener('click',closeDetail);
-dialog.addEventListener('click',event=>{if(event.target===dialog)closeDetail()});
-dialog.addEventListener('close',()=>{if(location.hash)history.replaceState(null,'',location.pathname+location.search)});
+document.getElementById('backToDirectory').addEventListener('click',closeDetail);
+window.addEventListener('popstate',routeFromAddress);
 
 renderDirectory('trigrams');
-const match=location.hash.match(/^#(trigram|hexagram)-(\d+)$/);
-if(match){const view=match[1]==='trigram'?'trigrams':'hexagrams';renderDirectory(view);openDetail(match[1],Number(match[2]),false)}
+routeFromAddress();
 
   </script>
 </body>
