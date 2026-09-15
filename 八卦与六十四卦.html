@@ -1748,7 +1748,7 @@ window.ICHING_CLASSICS = [
       {
         "position": 1,
         "label": "初九",
-        "text": "初九：不复远，无袛悔，元吉。",
+        "text": "初九：不远复，无祗悔，元吉。",
         "xiang": "不远之复，以修身也。",
         "sourceLocator": "周易/复/易经/初九",
         "xiangLocator": "周易/复/象/初九",
@@ -3836,7 +3836,7 @@ window.ICHING_CLASSICS = [
       {
         "position": 1,
         "label": "初六",
-        "text": "初六：鸿渐于乾，小子厉，有言，无咎。",
+        "text": "初六：鸿渐于干，小子厉，有言，无咎。",
         "xiang": "小子之厉，义无咎也。",
         "sourceLocator": "周易/渐/易经/初六",
         "xiangLocator": "周易/渐/象/初六",
@@ -4988,6 +4988,7 @@ function lineKeyword(line){
   return line.text.replace(new RegExp(`^${line.label}[：，,]?`),'').split(/[，。；！？]/)[0].replace(/[“”「」]/g,'').trim()||line.label;
 }
 function lineOutcome(text){
+  if(/吉/.test(text)&&/凶/.test(text))return '原文同时出现“吉”和“凶”，表示结果随原文所列条件而变，不能只取其中一个结论。';
   if(/凶/.test(text))return '原文明示“凶”，表示风险较高，应先停止冒进并检查边界。';
   if(/元吉|大吉/.test(text))return '原文明示“元吉”或“大吉”，表示在所述条件成立时非常有利。';
   if(/吉/.test(text))return '原文含“吉”，表示依照相应条件处理，结果较为有利。';
@@ -4998,6 +4999,7 @@ function lineOutcome(text){
   return '原文没有用单一吉凶概括，宜结合完整爻辞与所问之事理解。';
 }
 function lineAction(line){
+  if(/吉/.test(line.text)&&/凶/.test(line.text))return '分别辨明原文中的有利与不利条件；局部可行，不等于可以不加分寸地全面推进。';
   if(/凶/.test(line.text))return '先控制风险，不以侥幸心理强行推进。';
   if(/无咎/.test(line.text))return '守住所述条件与分寸，谨慎执行即可。';
   if(/吉/.test(line.text))return '条件相合时可以推进，同时避免把有利局面使用过度。';
