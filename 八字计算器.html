@@ -8711,8 +8711,8 @@ function render(){
     <div class="pillars">${pillars.map(p=>`<div class="pillar"><div class="pillar-title">${p.title}</div><span class="gan">${p.gz[0]}</span><span class="zhi">${p.gz[1]}</span><div class="pillar-meta">${p.wx} · ${p.ss}<br>${p.ny}</div></div>`).join('')}</div>
     <div class="day-master"><b>日主：</b>${dayGan}${stemsElement[dayGan]}（${stemsYinYang[dayGan]}${stemsElement[dayGan]}）</div>
     <div class="details">${pillars.map(p=>`<div class="detail"><small>${p.title}详情</small><p>干支：${p.gz}<br>藏干：${p.hide}<br>五行：${p.wx}<br>纳音：${p.ny}</p></div>`).join('')}</div>
-    <div class="export-actions"><button id="exportImage" class="export-button" type="button">导出结果图片</button></div>
-    <div id="exportPreview" class="export-preview" hidden><img id="exportedImage" alt="八字排盘结果图片"><p>苹果手机可长按图片保存；也可以点击下方按钮打开或下载原图。</p><a id="downloadImage" download>保存图片</a></div>`;
+    <div class="export-actions"><button id="exportImage" class="export-button" type="button">导出超清图片</button></div>
+    <div id="exportPreview" class="export-preview" hidden><img id="exportedImage" alt="八字排盘超清结果图片"><p>超清原图为 3240 × 4500 像素。苹果手机可长按图片保存；也可以点击下方按钮打开或下载原图。</p><a id="downloadImage" download>保存超清图片</a></div>`;
   lastResult={solarDate:solar.toYmd(),timeText,solarLine,lunarLine,lunarZodiac:lunar.getYearShengXiao(),baziZodiac,ruleText,pillars,dayGan};
   el('exportImage').addEventListener('click',exportResultImage);
   el('result').hidden=false;setTimeout(()=>el('result').scrollIntoView({behavior:'smooth',block:'start'}),50);
@@ -8729,7 +8729,8 @@ function canvasText(ctx,text,x,y,size,color,weight='400',align='left',family='sy
 
 function exportResultImage(){
   if(!lastResult)return;
-  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1500;const ctx=canvas.getContext('2d');
+  const logicalWidth=1080,logicalHeight=1500,exportScale=3;
+  const canvas=document.createElement('canvas');canvas.width=logicalWidth*exportScale;canvas.height=logicalHeight*exportScale;const ctx=canvas.getContext('2d');ctx.scale(exportScale,exportScale);
   const gradient=ctx.createLinearGradient(0,0,1080,1500);gradient.addColorStop(0,'#252720');gradient.addColorStop(1,'#33352e');ctx.fillStyle=gradient;ctx.fillRect(0,0,1080,1500);
   canvasText(ctx,'四柱八字',60,82,30,'#d8cfc2','500');canvasText(ctx,`${lastResult.solarDate} · ${lastResult.timeText}`,1020,82,25,'#c5baad','400','right');
   roundedRect(ctx,60,125,960,185,24,'#393b34');
@@ -8741,7 +8742,7 @@ function exportResultImage(){
   const detailY=915,detailW=468,detailH=205;
   lastResult.pillars.forEach((p,index)=>{const col=index%2,row=Math.floor(index/2),x=60+col*492,y=detailY+row*225;roundedRect(ctx,x,y,detailW,detailH,18,'#373932','#50524a');canvasText(ctx,`${p.title}详情`,x+25,y+31,21,'#df9878','600');canvasText(ctx,`干支：${p.gz}　五行：${p.wx}`,x+25,y+75,22,'#ded4c8');canvasText(ctx,`藏干：${p.hide}`,x+25,y+116,22,'#ded4c8');canvasText(ctx,`纳音：${p.ny}`,x+25,y+157,22,'#ded4c8')});
   canvasText(ctx,'传统文化排盘工具 · 图片由本机离线生成',540,1418,20,'#aaa195','400','center');canvasText(ctx,'结果不构成医疗、法律、投资或人生决策建议',540,1456,18,'#8f887e','400','center');
-  const url=canvas.toDataURL('image/png');el('exportedImage').src=url;el('downloadImage').href=url;el('downloadImage').download=`八字排盘-${lastResult.solarDate}.png`;el('exportPreview').hidden=false;el('exportPreview').scrollIntoView({behavior:'smooth',block:'start'});
+  canvas.toBlob(blob=>{if(!blob)return;if(exportResultImage.lastUrl)URL.revokeObjectURL(exportResultImage.lastUrl);const url=URL.createObjectURL(blob);exportResultImage.lastUrl=url;el('exportedImage').src=url;el('downloadImage').href=url;el('downloadImage').download=`八字排盘-超清-${lastResult.solarDate}.png`;el('exportPreview').hidden=false;el('exportPreview').scrollIntoView({behavior:'smooth',block:'start'})},'image/png');
 }
 
 document.querySelectorAll('.tab').forEach(button=>button.addEventListener('click',()=>{calendarMode=button.dataset.mode;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===button));el('solarPanel').hidden=calendarMode!=='solar';el('lunarPanel').hidden=calendarMode!=='lunar';el('error').hidden=true}));
