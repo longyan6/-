@@ -16,6 +16,7 @@
     .datetime-shell input[type="datetime-local"]::-webkit-date-and-time-value{display:flex;width:100%;height:100%;min-width:0;margin:0;padding:0;overflow:hidden;align-items:center;justify-content:center;color:var(--ink);font-size:17px;line-height:normal;text-align:center;white-space:nowrap}
     .datetime-shell input[type="datetime-local"]::-webkit-datetime-edit{display:flex;height:100%;margin:0;padding:0;align-items:center;justify-content:center;line-height:normal}
     .topic-label{margin-top:16px}
+    .time-rule-label{margin-top:14px}
     .reading{margin-top:16px;overflow:hidden;border:1px solid #4b5047;border-radius:17px;background:#30322c}
     .reading-title{padding:20px;border-bottom:1px solid #484b43;background:#373a33}
     .reading-title small{color:#d38c6d;letter-spacing:.16em}
@@ -65,15 +66,17 @@
         <label for="castTime">起卦时间</label>
         <div class="datetime-shell"><input id="castTime" type="datetime-local"></div>
         <button id="nowButton" class="secondary">使用当前时间</button>
+        <label for="timeDayBoundary" class="time-rule-label">子时换日规则</label>
+        <select id="timeDayBoundary"><option value="midnight">午夜换日（00:00换日）</option><option value="zi">子初换日（23:00换日）</option></select>
         <p class="note">自动读取设备当地时间；手动输入时请填写事情发生地的当地时间。按农历年支数＋月＋日定上卦，再加时支数定下卦与动爻。</p>
       </div>
 
       <div id="numbersPanel" class="panel" hidden>
         <div class="field-grid">
-          <div><label for="firstNumber">第一个数（上卦）</label><input id="firstNumber" type="number" min="1" step="1" inputmode="numeric"></div>
-          <div><label for="secondNumber">第二个数（下卦）</label><input id="secondNumber" type="number" min="1" step="1" inputmode="numeric"></div>
+          <div><label for="firstNumber">第一个数（上卦）</label><input id="firstNumber" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="100"></div>
+          <div><label for="secondNumber">第二个数（下卦）</label><input id="secondNumber" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="100"></div>
         </div>
-        <p class="note">两个数可以位数不同，但必须是正整数。两数相加除以6所得余数确定动爻。</p>
+        <p class="note">两个数可以位数不同，但必须是正整数（每个最多100位）。两数相加除以6所得余数确定动爻。</p>
       </div>
 
       <div id="manualPanel" class="panel" hidden>
@@ -176,6 +179,8 @@ const panels={time:el('timePanel'),numbers:el('numbersPanel'),manual:el('manualP
 function localDateTime(date=new Date()){const offset=date.getTimezoneOffset();return new Date(date.getTime()-offset*60000).toISOString().slice(0,16)}
 function remainder(value,base){const r=value%base;return r===0?base:r}
 function remainderText(value,base){const r=value%base;return r===0?`余0，按${base}处理`:`余${r}`}
+function bigRemainder(value,base){const divisor=BigInt(base),r=value%divisor;return Number(r===0n?divisor:r)}
+function bigRemainderText(value,base){const r=value%BigInt(base);return r===0n?`余0，按${base}处理`:`余${r}`}
 function trigram(n){return trigrams[n-1]}
 function lookup(upper,lower){const rec=hexagramMap[`${upper.bits}-${lower.bits}`];return{number:rec[0],name:rec[1],fullName:upper.bits===lower.bits?`${rec[1]}为${upper.nature}`:`${upper.nature}${lower.nature}${rec[1]}`,upper,lower}}
 function linesOf(upper,lower){return[...lower.bits,...upper.bits].map(x=>x==='1')}
@@ -203,9 +208,13 @@ function chineseDateParts(date){
 
 function calculate(){
   if(mode==='numbers'){
-    const a=Number(el('firstNumber').value),b=Number(el('secondNumber').value);
-    if(!Number.isSafeInteger(a)||a<1||!Number.isSafeInteger(b)||b<1)throw new Error('请输入两个有效的正整数。');
-    return{upper:trigram(remainder(a,8)),lower:trigram(remainder(b,8)),moving:remainder(a+b,6),process:`${a} ÷ 8 ${remainderText(a,8)}；${b} ÷ 8 ${remainderText(b,8)}；两数之和 ${a+b} ÷ 6 ${remainderText(a+b,6)}。`,time:'双数起卦'};
+    const aText=el('firstNumber').value.trim(),bText=el('secondNumber').value.trim();
+    if(!/^\d+$/.test(aText)||!/^\d+$/.test(bText))throw new Error('请输入两个有效的正整数。');
+    if(aText.length>100||bText.length>100)throw new Error('每个数字最多输入100位。');
+    const a=BigInt(aText),b=BigInt(bText);
+    if(a<1n||b<1n)throw new Error('请输入两个有效的正整数。');
+    const total=a+b;
+    return{upper:trigram(bigRemainder(a,8)),lower:trigram(bigRemainder(b,8)),moving:bigRemainder(total,6),process:`${a} ÷ 8 ${bigRemainderText(a,8)}；${b} ÷ 8 ${bigRemainderText(b,8)}；两数之和 ${total} ÷ 6 ${bigRemainderText(total,6)}。`,time:'双数起卦'};
   }
   if(mode==='manual'){
     const upper=trigram(Number(el('upperSelect').value)),lower=trigram(Number(el('lowerSelect').value)),moving=Number(el('movingSelect').value);
@@ -214,8 +223,11 @@ function calculate(){
   if(!el('castTime').value)throw new Error('请选择起卦时间。');
   const date=new Date(el('castTime').value);
   if(Number.isNaN(date.getTime()))throw new Error('起卦时间无效。');
-  const p=chineseDateParts(date),base=p.yearBranch+p.month+p.day,total=base+p.hourBranch;
-  return{upper:trigram(remainder(base,8)),lower:trigram(remainder(total,8)),moving:remainder(total,6),process:`农历${p.year}年${p.leap?'闰':''}${p.month}月${p.day}日，年支数${p.yearBranch}，${p.branch}时数${p.hourBranch}。上卦数：${p.yearBranch}+${p.month}+${p.day}=${base}；下卦及动爻总数：${base}+${p.hourBranch}=${total}。`,time:el('castTime').value.replace('T',' ')};
+  const ziBoundary=el('timeDayBoundary').value==='zi',calendarDate=new Date(date.getTime()),nextDay=ziBoundary&&date.getHours()===23;
+  if(nextDay)calendarDate.setDate(calendarDate.getDate()+1);
+  const p=chineseDateParts(calendarDate),base=p.yearBranch+p.month+p.day,total=base+p.hourBranch;
+  const boundaryText=ziBoundary?'子初换日（23:00换日）':'午夜换日（00:00换日）';
+  return{upper:trigram(remainder(base,8)),lower:trigram(remainder(total,8)),moving:remainder(total,6),process:`${boundaryText}${nextDay?'，本次23时按次日计算':''}。农历${p.year}年${p.leap?'闰':''}${p.month}月${p.day}日，年支数${p.yearBranch}，${p.branch}时数${p.hourBranch}。上卦数：${p.yearBranch}+${p.month}+${p.day}=${base}；下卦及动爻总数：${base}+${p.hourBranch}=${total}。`,time:el('castTime').value.replace('T',' ')};
 }
 
 function relation(body,use){
