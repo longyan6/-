@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="八个基础卦与周易六十四卦的卦象、拼音和详细介绍。">
+  <title>八卦与六十四卦</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23252720'/%3E%3Cg stroke='%23efd2a3' stroke-width='7' stroke-linecap='round'%3E%3Cpath d='M14 18h36M14 32h13M37 32h13M14 46h36'/%3E%3C/g%3E%3C/svg%3E">
+  <!-- ===== 样式区：修改页面颜色、字号和布局 ===== -->
+  <style>
+:root{--paper:#f5f0e8;--surface:#fffdf8;--ink:#252720;--muted:#746f65;--line:#ded5c8;--red:#98472f;--dark:#272a23;--gold:#efd0a0;--soft:#ebe3d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0,#fffaf0 0,transparent 35rem),linear-gradient(145deg,#f7f1e8,#e9dfd0);color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+button{font:inherit}.topbar{width:min(1160px,100%);margin:auto;padding:42px 24px 24px;display:flex;align-items:end;justify-content:space-between;gap:28px}.eyebrow{margin:0;color:var(--red);font-size:13px;letter-spacing:.25em}.topbar h1{margin:7px 0 0;font:700 clamp(38px,6vw,62px)/1.1 "STKaiti","KaiTi",serif}.intro{max-width:440px;margin:0;color:var(--muted);font-size:15px;line-height:1.75}
+main{width:min(1160px,calc(100% - 24px));margin:auto;padding:14px 0 46px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;border-radius:15px;background:#e6dccd}.tab{min-height:50px;border:0;border-radius:11px;background:transparent;color:#776f64;cursor:pointer}.tab.active{background:var(--surface);color:var(--ink);font-weight:750;box-shadow:0 4px 18px rgba(68,49,31,.09)}
+.directory-head{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:32px 8px 18px;border-bottom:2px solid var(--red)}.directory-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.directory-head h2{margin:5px 0 0;font:700 32px "STKaiti","KaiTi",serif}.directory-head>p{max-width:570px;text-align:right}.directory{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line)}
+.gua-card{position:relative;display:grid;grid-template-columns:34px 90px 1fr;align-items:center;min-height:142px;padding:16px 15px;border:0;background:var(--surface);color:var(--ink);text-align:left;cursor:pointer}.gua-card:hover{background:#fbf4e9}.gua-card:focus-visible{z-index:1;outline:3px solid #b16a53;outline-offset:-3px}.gua-number{color:#989085;font-size:13px;text-align:right;padding-right:7px;font-variant-numeric:tabular-nums}.gua-lines{width:72px;display:flex;flex-direction:column;gap:7px}.yao{display:block;height:7px;border-radius:5px}.yao.yang{background:currentColor}.yao.yin{display:flex;justify-content:space-between}.yao.yin::before,.yao.yin::after{content:"";display:block;width:29px;border-radius:5px;background:currentColor}.gua-label{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.gua-label small{color:#8a8277;font-size:12px;line-height:1.1;margin-bottom:4px}.gua-label strong{font:700 27px/1.05 "STKaiti","KaiTi",serif}.gua-label span{margin-top:6px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.detail-dialog{width:min(760px,calc(100% - 28px));max-height:calc(100vh - 28px);padding:0;border:0;border-radius:26px;background:var(--dark);color:#eee3d4;box-shadow:0 28px 90px rgba(25,25,20,.4);overflow:auto}.detail-dialog::backdrop{background:rgba(25,24,20,.58);backdrop-filter:blur(4px)}.close-detail{position:sticky;float:right;right:18px;top:18px;z-index:2;width:44px;height:44px;margin:18px;border:1px solid #565a4f;border-radius:50%;background:#363a31;color:#eadbc6;font-size:27px;line-height:1;cursor:pointer}.detail-content{padding:46px clamp(22px,5vw,54px) 52px}.detail-hero{display:grid;grid-template-columns:160px 1fr;gap:28px;align-items:center;padding-bottom:30px;border-bottom:1px solid #4d5147}.detail-symbol{width:150px;display:flex;flex-direction:column;gap:12px}.detail-symbol .yao{height:12px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:61px}.detail-meta{color:#c8b9a8;font-size:13px}.detail-meta b{display:block;margin:7px 0 0;color:var(--gold);font:700 clamp(44px,8vw,72px)/1.05 "STKaiti","KaiTi",serif}.detail-meta .pronunciation{display:block;color:#d8c4a7;font-size:17px;letter-spacing:.08em}.detail-meta .full-name{display:block;margin-top:9px;color:#c8b9a8}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.detail-box{padding:20px;border:1px solid #494d43;border-radius:16px;background:#32352e}.detail-box.wide{grid-column:1/-1}.detail-box h3{margin:0 0 9px;color:#db9475;font-size:14px;letter-spacing:.08em}.detail-box p{margin:0;color:#ddd3c6;font-size:16px;line-height:1.8}.components{display:grid;grid-template-columns:1fr 1fr;gap:10px}.component{padding:14px;border-radius:12px;background:#3b3e36}.component small{display:block;color:#aeaa9e;font-size:12px}.component b{display:block;margin-top:5px;color:#f0d3a8;font-size:18px}
+footer{padding:0 20px 36px;color:#837a6e;font-size:12px;text-align:center}
+@media(max-width:900px){.directory{grid-template-columns:repeat(3,minmax(0,1fr))}.topbar{align-items:flex-start;flex-direction:column}.intro{max-width:680px}}
+@media(max-width:650px){.topbar{padding:26px 17px 17px;gap:13px}.topbar h1{font-size:43px}main{width:min(100% - 16px,1160px);padding-top:8px}.directory-head{align-items:flex-start;flex-direction:column;gap:8px;padding:25px 5px 14px}.directory-head>p{text-align:left}.directory{grid-template-columns:repeat(2,minmax(0,1fr))}.gua-card{grid-template-columns:25px 68px 1fr;min-height:124px;padding:13px 8px}.gua-lines{width:56px;gap:6px}.yao{height:6px}.yao.yin::before,.yao.yin::after{width:23px}.gua-label strong{font-size:24px}.detail-dialog{width:calc(100% - 16px);max-height:calc(100vh - 16px);border-radius:22px}.detail-content{padding:36px 20px 34px}.detail-hero{grid-template-columns:110px 1fr;gap:19px}.detail-symbol{width:106px;gap:9px}.detail-symbol .yao{height:9px}.detail-symbol .yao.yin::before,.detail-symbol .yao.yin::after{width:43px}.detail-grid{grid-template-columns:1fr}.detail-box.wide{grid-column:auto}}
+@media(max-width:380px){.directory{grid-template-columns:1fr}.gua-card{grid-template-columns:30px 82px 1fr}.gua-lines{width:66px}.yao.yin::before,.yao.yin::after{width:27px}}
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">易经基础资料</p>
+      <h1>八卦与六十四卦</h1>
+    </div>
+    <p class="intro">点击卦象查看组成、含义与行动参考。全部资料保存在本地，可离线使用。</p>
+  </header>
+
+  <main>
+    <nav class="tabs" aria-label="卦象目录分类">
+      <button class="tab active" type="button" data-view="trigrams" aria-pressed="true">八个基础卦</button>
+      <button class="tab" type="button" data-view="hexagrams" aria-pressed="false">周易六十四卦</button>
+    </nav>
+    <section class="directory-head">
+      <div><p id="sectionKicker">八经卦</p><h2 id="sectionTitle">八个基础卦</h2></div>
+      <p id="sectionNote">梅花易数常用数序：乾一、兑二、离三、震四、巽五、坎六、艮七、坤八。</p>
+    </section>
+    <section id="directory" class="directory" aria-live="polite"></section>
+  </main>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <article id="detailContent" class="detail-content"></article>
+    <button id="closeDetail" class="close-detail" type="button" aria-label="关闭详细介绍">×</button>
+  </dialog>
+
+  <footer>卦象从下往上读：最下面一爻为初爻，最上面一爻为上爻。</footer>
+  <!-- ===== 资料区：以后修改卦象介绍，主要编辑这里 ===== -->
+  <script>
+/*
+ * 卦象资料文件
+ * 以后修改介绍文字，优先编辑本文件中的 summary（核心含义）和 advice（行动参考）。
+ * code 按“初爻到上爻”记录：1 为阳爻，0 为阴爻。
+ */
+window.ICHING_DATA = (() => {
+  const trigrams = [
+    {number:1,name:'乾',pinyin:'qián',nature:'天',element:'金',code:'111',keywords:'刚健、创造、自强',summary:'三阳爻纯阳，取象为天。强调主动、开创、担当与持续行动。',advice:'把握方向并主动承担，但力量强盛时尤其要避免刚愎、自满和用力过度。'},
+    {number:2,name:'兑',pinyin:'duì',nature:'泽',element:'金',code:'110',keywords:'喜悦、交流、润泽',summary:'上阴下二阳，取象为泽。强调沟通、愉悦、相互回应与言语表达。',advice:'以真诚沟通促成合作，同时分辨悦耳之言与真实承诺。'},
+    {number:3,name:'离',pinyin:'lí',nature:'火',element:'火',code:'101',keywords:'光明、依附、辨识',summary:'上下为阳、中间为阴，取象为火。强调看见、表达、文明与有所依托。',advice:'先看清重点，再依托合适的人与条件；保持清醒，避免只重表面。'},
+    {number:4,name:'震',pinyin:'zhèn',nature:'雷',element:'木',code:'100',keywords:'震动、行动、警醒',summary:'初阳在下、二阴在上，取象为雷。代表启动、惊动、迅速反应与新的行动。',advice:'变化突然时先稳住心神，再采取清楚而有次序的行动。'},
+    {number:5,name:'巽',pinyin:'xùn',nature:'风',element:'木',code:'011',keywords:'进入、谦逊、渗透',summary:'初阴在下、二阳在上，取象为风。强调柔顺进入、反复影响与细致渗透。',advice:'用温和而持续的方式推进，不必强攻，但也不要因反复权衡而失去立场。'},
+    {number:6,name:'坎',pinyin:'kǎn',nature:'水',element:'水',code:'010',keywords:'险阻、流动、考验',summary:'阳居中、上下为阴，取象为水。代表风险、反复考验、流动与在险中求通。',advice:'正视风险并建立可靠流程，遇到反复问题时尤其需要耐心和底线。'},
+    {number:7,name:'艮',pinyin:'gèn',nature:'山',element:'土',code:'001',keywords:'停止、界限、安定',summary:'上阳止于二阴之上，取象为山。强调停止、边界、专注与安静反省。',advice:'知道何时止步，守住界限；暂停不是停滞，而是为了重新看清方向。'},
+    {number:8,name:'坤',pinyin:'kūn',nature:'地',element:'土',code:'000',keywords:'包容、承载、顺势',summary:'三阴爻纯阴，取象为地。强调接纳、配合、滋养、耐心与厚德承载。',advice:'顺应现实并稳步积累，用柔韧和持续支持事情成长，但不要失去原则。'}
+  ];
+
+  // [卦名, 拼音, 核心含义, 行动参考]
+  const text = [null,
+    ['乾','qián','刚健开创','条件允许时主动担当、持续精进，但要避免一味逞强。'],
+    ['坤','kūn','包容承载','先接纳现实、配合环境，以稳定和耐心推进。'],
+    ['屯','zhūn','起步艰难','事情刚开始容易杂乱，宜先建立秩序和基础。'],
+    ['蒙','méng','启蒙学习','信息尚不充分，宜求教、核实，避免凭猜测行动。'],
+    ['需','xū','等待时机','条件尚未齐备，守住准备比仓促推进更重要。'],
+    ['讼','sòng','争议冲突','先明确事实和边界，减少正面争执，必要时寻求公正协调。'],
+    ['师','shī','组织纪律','需要统一目标、分工和规则，行动才有力量。'],
+    ['比','bǐ','亲近联合','合作有利，但应先确认彼此是否真诚信任。'],
+    ['小畜','xiǎo xù','小有积蓄','力量正在积累，适合处理细节，不宜强行突破。'],
+    ['履','lǚ','谨慎履行','处境可能有风险，按规则、守分寸可以减少问题。'],
+    ['泰','tài','通达和顺','上下协调、条件顺畅，宜把握机会并保持谦和。'],
+    ['否','pǐ','闭塞不通','沟通或条件受阻，宜保存实力、等待转机。'],
+    ['同人','tóng rén','求同合作','公开坦诚、寻找共同目标，有助于聚合不同的人。'],
+    ['大有','dà yǒu','资源充足','拥有条件时更要妥善管理，避免因自满而浪费。'],
+    ['谦','qiān','谦逊有度','降低姿态、实事求是，反而更容易得到支持。'],
+    ['豫','yù','顺势而动','气氛有利但不可只凭兴奋，行动前要做好准备。'],
+    ['随','suí','随顺变化','顺应趋势与合适的人，同时保留自己的原则。'],
+    ['蛊','gǔ','整顿积弊','旧问题需要清理修复，先找根源再谈发展。'],
+    ['临','lín','接近成长','机会正在靠近，适合主动关照细节并建立关系。'],
+    ['观','guān','观察审视','暂缓表态，从全局和他人反应中寻找真实情况。'],
+    ['噬嗑','shì kè','果断清障','关键障碍需要明确处理，规则和证据不可缺少。'],
+    ['贲','bì','修饰表达','形式能够加分，但不能让包装掩盖实际内容。'],
+    ['剥','bō','剥落收缩','基础正在减弱，宜停止扩张、保护核心。'],
+    ['复','fù','回归复原','偏离后出现重新开始的机会，先回到正确轨道。'],
+    ['无妄','wú wàng','守正自然','减少妄念和侥幸，按事实与正当方式处理。'],
+    ['大畜','dà xù','积蓄克制','储备能力和资源，暂时克制才能承担更大的事。'],
+    ['颐','yí','滋养言行','关注输入、饮食、学习与说话方式，持续养正。'],
+    ['大过','dà guò','压力过重','责任或结构已接近承受上限，需要分担和调整。'],
+    ['坎','kǎn','反复险阻','问题可能不止一次，保持警觉并建立可靠流程。'],
+    ['离','lí','光明依附','看清重点并依托合适条件，避免只追求表面亮眼。'],
+    ['咸','xián','感应互动','彼此影响明显，真诚回应比单方面强求有效。'],
+    ['恒','héng','恒久坚持','稳定节奏、长期执行，比短期变化更重要。'],
+    ['遁','dùn','适时退让','环境不利时主动拉开距离，是保存实力而非失败。'],
+    ['大壮','dà zhuàng','力量增长','有推动力但不可滥用，越强越要守规则。'],
+    ['晋','jìn','逐步晋升','趋势向上，宜凭实际表现稳步前进。'],
+    ['明夷','míng yí','隐藏锋芒','外部环境不明时保护自己，保持内在判断。'],
+    ['家人','jiā rén','内部秩序','先理顺角色、责任和沟通，外部问题才容易解决。'],
+    ['睽','kuí','分歧对立','差异客观存在，先求小同，不宜勉强一致。'],
+    ['蹇','jiǎn','行进困难','前方有阻，宜借助支持、调整路线而非硬闯。'],
+    ['解','xiè','解除缓和','压力开始松动，及时处理遗留问题才能真正轻松。'],
+    ['损','sǔn','减少取舍','做减法、控制消耗，把资源留给最重要的部分。'],
+    ['益','yì','增益成长','适合改善与投入，也应让收益惠及整体。'],
+    ['夬','guài','决断突破','问题已到必须表态的阶段，果断但不可粗暴。'],
+    ['姤','gòu','突然相遇','新机会或新因素来得突然，先观察其长期影响。'],
+    ['萃','cuì','聚集整合','人和资源汇聚，关键在共同目标和组织能力。'],
+    ['升','shēng','稳步上升','依靠持续努力逐层推进，不必急于一步到位。'],
+    ['困','kùn','受困磨炼','外部空间有限，先守住信念与基本盘。'],
+    ['井','jǐng','共同资源','维护长期可用的资源与制度，比争夺眼前利益重要。'],
+    ['革','gé','改革更新','旧方式已不适用，变化需要正当时机和清楚共识。'],
+    ['鼎','dǐng','更新成器','通过重新组合资源实现升级，重视核心能力。'],
+    ['震','zhèn','震动警醒','突发变化带来惊动，先稳住再迅速回应。'],
+    ['艮','gèn','停止安定','知道何时停止，安静下来才能看清边界。'],
+    ['渐','jiàn','循序渐进','变化需要过程，稳定步骤胜过急于求成。'],
+    ['归妹','guī mèi','位置未稳','关系或条件不完全匹配，尤其要守礼并明确边界。'],
+    ['丰','fēng','丰盛高峰','成果明显但高峰难久，及时管理和分享。'],
+    ['旅','lǚ','旅途暂居','环境具有临时性，保持灵活并尊重当地规则。'],
+    ['巽','xùn','柔顺深入','用温和、反复的方式进入问题，避免摇摆不定。'],
+    ['兑','duì','喜悦交流','沟通和互惠有利，但要防止只说好听的话。'],
+    ['涣','huàn','涣散疏通','先化解隔阂、重新聚拢人心和资源。'],
+    ['节','jié','节制边界','设置适度规则可以长久，过严也会造成压力。'],
+    ['中孚','zhōng fú','诚信感通','信任来自内外一致，承诺必须能够兑现。'],
+    ['小过','xiǎo guò','小事谨慎','适合处理局部和细节，大动作需要更加保守。'],
+    ['既济','jì jì','已经完成','成果初成，最需要防止松懈和细节反复。'],
+    ['未济','wèi jì','尚未完成','仍在过渡期，谨慎完成最后步骤，不宜提前庆祝。']
+  ];
+
+  const codes = trigrams.map(item => item.code);
+  const byCode = Object.fromEntries(trigrams.map(item => [item.code, item]));
+  const byLower = {
+    '111':[1,43,14,34,9,5,26,11], '110':[10,58,38,54,61,60,41,19],
+    '101':[13,49,30,55,37,63,22,36], '100':[25,17,21,51,42,3,27,24],
+    '011':[44,28,50,32,57,48,18,46], '010':[6,47,64,40,59,29,4,7],
+    '001':[33,31,56,62,53,39,52,15], '000':[12,45,35,16,20,8,23,2]
+  };
+  const positions = {};
+  Object.entries(byLower).forEach(([lower,numbers]) => numbers.forEach((number,index) => {
+    positions[number] = {upper:codes[index], lower};
+  }));
+  const hexagrams = text.slice(1).map((item,index) => {
+    const number=index+1, position=positions[number], upper=byCode[position.upper], lower=byCode[position.lower];
+    return {number,name:item[0],pinyin:item[1],theme:item[2],advice:item[3],upper:upper.name,lower:lower.name,code:position.lower+position.upper};
+  });
+  return {trigrams,hexagrams};
+})();
+
+  </script>
+
+  <!-- ===== 功能区：目录切换、点击和弹窗逻辑 ===== -->
+  <script>
+const {trigrams,hexagrams}=window.ICHING_DATA;
+const directory=document.getElementById('directory');
+const dialog=document.getElementById('detailDialog');
+const detail=document.getElementById('detailContent');
+const sectionTitle=document.getElementById('sectionTitle');
+const sectionKicker=document.getElementById('sectionKicker');
+const sectionNote=document.getElementById('sectionNote');
+const trigramByName=Object.fromEntries(trigrams.map(item=>[item.name,item]));
+let currentView='trigrams';
+
+function linesMarkup(code,detailView=false){
+  return [...code].reverse().map(bit=>`<i class="yao ${bit==='1'?'yang':'yin'}"></i>`).join('');
+}
+function fullName(item){
+  if(!item.upper)return `${item.name}为${item.nature}`;
+  const upper=trigramByName[item.upper],lower=trigramByName[item.lower];
+  return item.upper===item.lower?`${item.name}为${upper.nature}`:`${upper.nature}${lower.nature}${item.name}`;
+}
+function cardMarkup(item,type){
+  const secondary=type==='trigram'?`${item.nature} · ${item.element}`:fullName(item);
+  return `<button class="gua-card" type="button" data-type="${type}" data-number="${item.number}" aria-label="查看第${item.number}${type==='trigram'?'基础卦':'卦'}${item.name}，读音${item.pinyin}">
+    <span class="gua-number">${String(item.number).padStart(2,'0')}</span>
+    <span class="gua-lines" aria-hidden="true">${linesMarkup(item.code)}</span>
+    <span class="gua-label"><small>${item.pinyin}</small><strong>${item.name}</strong><span>${secondary}</span></span>
+  </button>`;
+}
+function renderDirectory(view){
+  currentView=view;
+  const isTrigram=view==='trigrams',items=isTrigram?trigrams:hexagrams,type=isTrigram?'trigram':'hexagram';
+  sectionKicker.textContent=isTrigram?'八经卦':'通行卦序';
+  sectionTitle.textContent=isTrigram?'八个基础卦':'周易六十四卦';
+  sectionNote.textContent=isTrigram?'梅花易数常用数序：乾一、兑二、离三、震四、巽五、坎六、艮七、坤八。':'每个六爻卦都由一个上卦和一个下卦组成；编号采用《周易》通行卦序。';
+  directory.innerHTML=items.map(item=>cardMarkup(item,type)).join('');
+  document.querySelectorAll('.tab').forEach(button=>{const active=button.dataset.view===view;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active))});
+}
+function detailMarkup(item,type){
+  const isTrigram=type==='trigram';
+  const composition=isTrigram?'':`<div class="components"><div class="component"><small>上卦</small><b>${item.upper} · ${trigramByName[item.upper].nature}</b></div><div class="component"><small>下卦</small><b>${item.lower} · ${trigramByName[item.lower].nature}</b></div></div>`;
+  const theme=isTrigram?item.keywords:item.theme;
+  const summary=isTrigram?item.summary:`${fullName(item)}由上卦${item.upper}与下卦${item.lower}组成。核心主题是“${item.theme}”。`;
+  return `<div class="detail-hero"><div class="detail-symbol" aria-hidden="true">${linesMarkup(item.code,true)}</div><div class="detail-meta"><span>第 ${item.number} ${isTrigram?'基础卦':'卦'}</span><span class="pronunciation">${item.pinyin}</span><b>${item.name}</b><span class="full-name">${fullName(item)}</span></div></div>
+  <div class="detail-grid">${composition?`<section class="detail-box wide"><h3>卦象组成</h3>${composition}</section>`:''}<section class="detail-box"><h3>核心含义</h3><p>${theme}</p></section><section class="detail-box"><h3>卦象理解</h3><p>${summary}</p></section><section class="detail-box wide"><h3>行动参考</h3><p>${item.advice}</p></section></div>`;
+}
+function openDetail(type,number,updateHash=true){
+  const list=type==='trigram'?trigrams:hexagrams,item=list.find(entry=>entry.number===number);
+  if(!item)return;
+  detail.innerHTML=detailMarkup(item,type);
+  if(!dialog.open)dialog.showModal();
+  if(updateHash)history.replaceState(null,'',`#${type}-${number}`);
+}
+function closeDetail(){if(dialog.open)dialog.close();history.replaceState(null,'',location.pathname+location.search)}
+
+document.querySelector('.tabs').addEventListener('click',event=>{const button=event.target.closest('.tab');if(button)renderDirectory(button.dataset.view)});
+directory.addEventListener('click',event=>{const card=event.target.closest('.gua-card');if(card)openDetail(card.dataset.type,Number(card.dataset.number))});
+document.getElementById('closeDetail').addEventListener('click',closeDetail);
+dialog.addEventListener('click',event=>{if(event.target===dialog)closeDetail()});
+dialog.addEventListener('close',()=>{if(location.hash)history.replaceState(null,'',location.pathname+location.search)});
+
+renderDirectory('trigrams');
+const match=location.hash.match(/^#(trigram|hexagram)-(\d+)$/);
+if(match){const view=match[1]==='trigram'?'trigrams':'hexagrams';renderDirectory(view);openDetail(match[1],Number(match[2]),false)}
+
+  </script>
+</body>
+</html>
