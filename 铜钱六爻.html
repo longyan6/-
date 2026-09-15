@@ -440,7 +440,6 @@ function renderResult() {
       <div class="meaning"><small>变化方向</small><h4>${changed.fullName}</h4><p>关键词：${changed.keywords}。请结合所问之事观察变化。</p></div>
     </div>`;
   result.hidden = false;
-  localStorage.setItem('liuyao-current', JSON.stringify({ question: question.value, castTime: castTime.value, throws: throws.map(x => x.value) }));
   setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 }
 
