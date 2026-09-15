@@ -127,9 +127,10 @@ window.ICHING_CLASSICS = [
         "position": null,
         "label": "用九",
         "text": "用九：见群龙无首，吉。",
-        "xiang": "",
+        "xiang": "用九，天德不可为首也。",
         "special": true,
         "sourceLocator": "周易/乾/易经/用九",
+        "xiangLocator": "周易/乾/象/用九",
         "status": "checked"
       }
     ],
@@ -210,9 +211,10 @@ window.ICHING_CLASSICS = [
         "position": null,
         "label": "用六",
         "text": "用六：利永贞。",
-        "xiang": "",
+        "xiang": "用六永贞，以大终也。",
         "special": true,
         "sourceLocator": "周易/坤/易经/用六",
+        "xiangLocator": "周易/坤/象/用六",
         "status": "checked"
       }
     ],
@@ -5010,7 +5012,8 @@ function lineExplanation(line){
   const keyword=lineKeyword(line);
   const stage=line.special?'六爻整体发生特定变化时参考':lineStages[line.position];
   const xiangPoint=line.xiang?line.xiang.replace(/^《?象》?曰[：，]?/,'').replace(/[“”「」]/g,''):'此项属于乾、坤的特殊辞，不对应单独一爻';
-  return {keyword,stage,plain:`本爻以“${keyword}”作为主要意象。《小象》进一步说明：“${xiangPoint}”`,action:lineAction(line),outcome:lineOutcome(line.text)};
+  const commentaryName=line.special?'《象传》':'《小象》';
+  return {keyword,stage,plain:`本爻以“${keyword}”作为主要意象。${commentaryName}进一步说明：“${xiangPoint}”`,action:lineAction(line),outcome:lineOutcome(line.text)};
 }
 function relationCard(label,number,note){
   const target=hexagramByNumber[number];
@@ -5042,7 +5045,7 @@ function detailMarkup(item,type){
   }
   const composition=`<div class="components"><div class="component"><small>上卦</small><b>${item.upper} · ${trigramByName[item.upper].nature}</b></div><div class="component"><small>下卦</small><b>${item.lower} · ${trigramByName[item.lower].nature}</b></div></div>`;
   const summary=item.plainReading;
-  const lineCards=item.lines.map(line=>{const info=lineExplanation(line);const locator=[line.sourceLocator,line.xiangLocator].filter(Boolean).join('；');return `<article class="line-card${line.special?' special-line':''}"><h4>${line.label}</h4><div class="line-original"><small>爻辞${line.special?'（特殊辞）':''}</small><p>${classicText(line.text)}</p></div>${line.xiang?`<div class="line-original"><small>《小象》原文</small><p>${classicText(line.xiang)}</p></div>`:''}<dl class="line-reading"><div><dt>关键词</dt><dd>${info.keyword}</dd></div><div><dt>所处阶段</dt><dd>${info.stage}</dd></div><div><dt>白话意思</dt><dd>${info.plain} ${info.outcome}</dd></div><div><dt>行动提醒</dt><dd>${info.action}</dd></div>${locator?`<div class="source-locator"><dt>资料定位</dt><dd>${locator}</dd></div>`:''}</dl></article>`}).join('');
+  const lineCards=item.lines.map(line=>{const info=lineExplanation(line);const locator=[line.sourceLocator,line.xiangLocator].filter(Boolean).join('；');return `<article class="line-card${line.special?' special-line':''}"><h4>${line.label}</h4><div class="line-original"><small>爻辞${line.special?'（特殊辞）':''}</small><p>${classicText(line.text)}</p></div>${line.xiang?`<div class="line-original"><small>${line.special?'《象传》原文':'《小象》原文'}</small><p>${classicText(line.xiang)}</p></div>`:''}<dl class="line-reading"><div><dt>关键词</dt><dd>${info.keyword}</dd></div><div><dt>所处阶段</dt><dd>${info.stage}</dd></div><div><dt>白话意思</dt><dd>${info.plain} ${info.outcome}</dd></div><div><dt>行动提醒</dt><dd>${info.action}</dd></div>${locator?`<div class="source-locator"><dt>资料定位</dt><dd>${locator}</dd></div>`:''}</dl></article>`}).join('');
   const relations=`<div class="relation-list">${relationCard('互卦',item.relations.nuclear,'取二三四爻为下卦、三四五爻为上卦')}${relationCard('错卦',item.relations.opposite,'六爻阴阳全部相反')}${relationCard('综卦',item.relations.reversed,item.relations.reversed===item.number?'上下倒置后仍为本卦':'把整个卦象上下倒置')}${item.relations.previous?relationCard('前一卦',item.relations.previous,'《周易》通行卦序'):''}${item.relations.next?relationCard('后一卦',item.relations.next,'《周易》通行卦序'):''}</div>`;
   const variantNote=item.variants.length?`本卦资料中保留的异文标记：${item.variants.join('、')}。异文并列展示，不擅自判定只有一种写法。`:'当前整理文本未标出需要单列的常见异文；不同古本仍可能存在文字差异。';
   const sourceLocators=[item.source.guaciLocator,item.source.tuanLocator,item.source.daxiangLocator].filter(Boolean).join('；');
