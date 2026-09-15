@@ -383,7 +383,8 @@ function lineFrom(value, index) {
 
 function yaoMarkup(item, large = false) {
   const cls = large ? `big-line ${item.yang ? 'yang' : 'yin'}` : `yao ${item.yang ? 'yang' : 'yin'}`;
-  return `<div class="${cls}">${large && item.moving ? '<em>×</em>' : ''}</div>`;
+  const marker = item.value === 9 ? '○' : '×';
+  return `<div class="${cls}">${large && item.moving ? `<em>${marker}</em>` : ''}</div>`;
 }
 
 function lookup(lines) {
